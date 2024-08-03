@@ -1,6 +1,7 @@
 # Extras
 .DS_Store
 demo
+slides/images
 
 ## Core latex/pdflatex auxiliary files:
 *.aux

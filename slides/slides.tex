@@ -1,7 +1,12 @@
-\documentclass[10pt]{beamer}
+\documentclass[10pt,border=3pt,tikz]{beamer}
 
 \usepackage{pgfpages}
-\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+
+\usepackage{tikz}
+\usetikzlibrary{decorations.pathreplacing}
+\usepackage{listofitems} % for \readlist to create arrays
+\tikzstyle{mynode}=[thick,draw=blue,fill=blue!20,circle,minimum size=15]
 %\setbeameroption{show notes on second screen }
 \usetheme[
 % nojauge,
@@ -11,9 +16,32 @@ delaunay,
 amurmapleblack
 ]{Amurmaple}
 
-\usepackage[T1]{fontenc}
-\usepackage[utf8]{inputenc}
 \usepackage{lipsum}
+\usepackage{emoji}
+\graphicspath{ {./images/} }
+
+\usepackage{xcolor}
+\colorlet{myred}{red!80!black}
+\colorlet{myblue}{blue!80!black}
+\colorlet{mygreen}{green!60!black}
+\colorlet{myorange}{orange!70!red!60!black}
+\colorlet{mydarkred}{red!30!black}
+\colorlet{mydarkblue}{blue!40!black}
+\colorlet{mydarkgreen}{green!30!black}
+\tikzset{
+    >=latex, % for default LaTeX arrow head
+    node/.style={thick,circle,draw=myblue,minimum size=22,inner sep=0.5,outer sep=0.6},
+    node in/.style={node,green!20!black,draw=mygreen!30!black,fill=mygreen!25},
+    node hidden/.style={node,blue!20!black,draw=myblue!30!black,fill=myblue!20},
+    node convol/.style={node,orange!20!black,draw=myorange!30!black,fill=myorange!20},
+    node out/.style={node,red!20!black,draw=myred!30!black,fill=myred!20},
+    connect/.style={thick,mydarkblue}, %,line cap=round
+    connect arrow/.style={-{Latex[length=4,width=3.5]},thick,mydarkblue,shorten <=0.5,shorten >=1},
+    node 1/.style={node in}, % node styles, numbered for easy mapping with \nstyle
+    node 2/.style={node hidden},
+    node 3/.style={node out}
+}
+\def\nstyle{int(\lay<\Nnodlen?min(2,\lay):3)} % map layer number onto 1, 2, or 3
 
 \definecolor{newremark}{rgb}{0.7,0.2,0.2}
 \colorlet{AmurmapleRemarkColor}{newremark}
@@ -23,54 +51,513 @@ amurmapleblack
 \subtitle{Módulo 5}
 \institute[ENES Unidad León]{Diplomado en Ciencia de Datos\\
 	Escuela Nacional de Estudios Superiores, Unidad León}
-\date{Julio-agosto, 2024}
-\titlegraphic{\includegraphics[width=3cm]{images/logo.png}}
+\date{Agosto, 2024}
+\titlegraphic{\includegraphics[width=3cm]{logo.png}}
 \mail{ferro@cimat.mx}
 \webpage{https://rodolfoferro.xyz}
 % \collaboration{in collaboration with \LaTeX{}}
-\logo{\includegraphics[width=1.8cm]{images/logo.png}}
+\logo{\includegraphics[width=1.6cm]{logo.png}}
 
 \begin{document}
     
 	\maketitle
+    
+        
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%    
+    % ----------- Presentación ------------------
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    \begin{frame}{Tutor del módulo}{Aprendizaje profundo}
+        \begin{columns}
+            % Columna izquierda
+            \begin{column}{0.7\textwidth}
+                \textbf{Rodolfo Ferro} (\href{mailto:ferro@cimat.mx}{ferro@cimat.mx})
+                {\scriptsize \begin{itemize}
+                    \item Sr. SWE (Data Engineer) @ Bisonic México
+                    \item Miembro del Consejo Consultivo para el Desarrollo Económico, Creatividad e Innovación de León
+                    \item \textbf{Formación:} BMath, CSysEng, StatMethodsSpc (\textit{ongoing})
+                    \item \textbf{Experiencia:} ML Engineer @ Vindoo.ai (España), Sherpa Digital en IA @ Microsoft México, AI Research Assistant @ CIMAT \& AI Research Intern @ Harvard.
+                \end{itemize}}
+            \end{column}
+            % Columna derecha
+            \begin{column}{0.25\textwidth}
+                \begin{figure}
+                    \centering
+                    \includegraphics[width=1\textwidth]{rodo.png}
+                \end{figure}
+            \end{column}
+        \end{columns}
+    \end{frame}
 	
 	\sepframe[title={Tabla de contenidos}]
 	
     \frame{\tableofcontents}
+
 	
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%    
     % ----------- Intro al DL -------------------
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 	\section{Intro al aprendizaje profundo}
     
+    % ----------- Motivación 01 ------------------
+    \subsection{Motivación}
+    
+    \begin{frame}{Motivación}{Intro al aprendizaje profundo}
+        \begin{figure}
+            \centering
+            \includegraphics[width=1\textwidth]{motivation-01}
+        \end{figure}
+    \end{frame}
+    
+    % ----------- Motivación 02 ------------------
+    \begin{frame}{Motivación}{Intro al aprendizaje profundo}
+        \begin{figure}
+            \centering
+            \includegraphics[width=1\textwidth]{motivation-02}
+        \end{figure}
+    \end{frame}
+    
+    % ----------- Motivación 03 ------------------
+    \begin{frame}{Motivación}{Intro al aprendizaje profundo}
+        \begin{figure}
+            \centering
+            \includegraphics[width=1\textwidth]{motivation-03}
+        \end{figure}
+    \end{frame}
+
+    % ----------- Motivación 04 ------------------
+    \begin{frame}{Motivación}{Intro al aprendizaje profundo}
+        \begin{figure}
+            \centering
+            \includegraphics[width=1\textwidth]{motivation-04}
+        \end{figure}
+    \end{frame}
+    
+    % ----------- ¿Qué es el DL? 01 --------------
+    \subsection{Introducción}
+    
+    \begin{frame}{¿Qué es el \textsl{Deep Learning}?}{Intro al aprendizaje profundo}
+        \begin{quotation}[David Foster (Generative Deep Learning)]
+            El aprendizaje profundo (Deep Learning) comprende algoritmos de Machine Learning que (particularmente) utilizan múltiples capas apiladas de unidades de procesamiento para aprender representaciones en un alto nivel sobre datos no estructurados.
+        \end{quotation}
+    \end{frame}
+    
+    % ----------- ¿Qué es el DL? 02 --------------
+    \begin{frame}{¿Qué es el \textsl{Deep Learning}?}{Intro al aprendizaje profundo}
+        \begin{figure}
+            \centering
+            \includegraphics[width=1\textwidth]{ai-ml-dl}
+        \end{figure}
+    \end{frame}
+    
+    % ----------- ¿Qué es el DL? 03 --------------
+    \begin{frame}{¿Qué es el \textsl{Deep Learning}?}{Intro al aprendizaje profundo}
+        \begin{center}
+            \begin{itemize}
+                \item \textbf{Inteligencia artificial:} Cualquier técnica que permita
+                a las computadoras emular o imitar el comportamiento humano.
+                \item \textbf{Aprendizaje de máquina:} Capacidad de aprender sin ser programado explícitamente, enfoque en los algoritmos y la matemtica.
+                \item \textbf{Aprendizaje profundo:} Extrae patrones de datos utilizando redes neuronales.
+            \end{itemize}
+        \end{center}
+    \end{frame}
+    
+    % ----------- ¿Por qué el DL? 01 ------------
+    \begin{frame}{¿Por qué el \textsl{Deep Learning}?}{Intro al aprendizaje profundo}
+        \begin{figure}
+            \centering
+            \includegraphics[width=0.8\textwidth]{ml-01}
+        \end{figure}
+    \end{frame}
+
+    % ----------- ¿Por qué el DL? 02 ------------
+    \begin{frame}{¿Por qué el \textsl{Deep Learning}?}{Intro al aprendizaje profundo}
+        \begin{figure}
+            \centering
+            \includegraphics[width=0.8\textwidth]{ml-02}
+        \end{figure}
+    \end{frame}
+    
+    % ----------- ¿Por qué el DL? 02 ------------
+    \begin{frame}{¿Por qué el \textsl{Deep Learning}?}{Intro al aprendizaje profundo}
+        \begin{center}
+            \begin{itemize}
+                \item La ingeniería de características requiere mucho tiempo, es suceptible a errores y no es escalable consistentemente con datos complejos. Mejor busquemos aprender las características subyacentes directamente de los datos.
+                \item Las redes neuronales artificales existen desde hace décadas, pero su predominio actual reside principalmente en los siguientes tres aspectos:
+                \begin{enumerate}
+                    \item Hardware (GPUs, etc. + Paralelización)
+                    \item Software (Frameworks para trabajar con NNs)
+                    \item Grandes cantidades de datos
+                \end{enumerate}
+                \item El aprendizaje profundo está revolucionando muchos campos.
+            \end{itemize}
+        \end{center}
+    \end{frame}
+    
     % ----------- Contexto histórico ------------
     \subsection{Contexto histórico}
     
     \begin{frame}{Contexto histórico}{Intro al aprendizaje profundo}
-        \begin{block}{Block title}
-            Cras viverra metus rhoncus sem.
-        \end{block}
+        \begin{figure}
+            \centering
+            \includegraphics[width=0.9\textwidth]{santiago}
+            \caption{Santiago Ramón y Cajal}
+        \end{figure}
     \end{frame}
     
-    % ----------- Contexto histórico ------------
-    \subsection{Perceptrón multicapa}
-    
+    % ----------- Santiago Ramón y Cajal --------
     \begin{frame}{Contexto histórico}{Intro al aprendizaje profundo}
-        \begin{block}{Block title}
-            Cras viverra metus rhoncus sem.
-        \end{block}
+        \begin{figure}
+            \centering
+            \includegraphics[width=0.3\textwidth]{santiago-neuron} $\longrightarrow$
+            \includegraphics[width=0.5\textwidth]{neuron}
+            
+            \let\thefootnote\relax\footnote{{\tiny “Santiago Ramón y Cajal Drawings.” Janelia Research Campus. Accessed July 5, 2024. \href{https://www.janelia.org/archive/santiago-ramón-y-cajal-drawings}{https://www.janelia.org}}}
+            
+            \let\thefootnote\relax\footnote{{\tiny “Overview of Neuron Structure and Function (Article).” Khan Academy. Accessed July 5, 2024. \href{https://www.khanacademy.org/science/biology/human-biology/neuron-nervous-system/a/overview-of-neuron-structure-and-function}{https://www.khanacademy.org}}}
+        \end{figure}
     \end{frame}
     
+    % ----------- McCulloch & Pitts -------------
+    \begin{frame}{TLU}{Intro al aprendizaje profundo}
+        \begin{figure}
+            \centering
+            \includegraphics[width=0.9\textwidth]{mcculloch-pitts}
+            \caption{Warren McCulloch \& Walter Pitts}
+        \end{figure}
+    \end{frame}
+    
+    % ----------- TLU ---------------------------
+    \begin{frame}{TLU}{Intro al aprendizaje profundo}
+        \begin{center}
+            \begin{tikzpicture}[shorten >=1pt]
+                \tikzstyle{unit}=[draw,shape=circle,minimum size=0.8cm,fill=green!20]
+                \tikzstyle{weight}=[draw,shape=rectangle,minimum size=0.5cm,fill=gray!20]
+                \tikzstyle{sum}=[draw,shape=circle,minimum size=1cm,fill=yellow!20]
+                \tikzstyle{activation}=[draw,shape=rectangle,minimum size=0.5cm,fill=blue!20]
+                \tikzstyle{output}=[draw,shape=circle,minimum size=0.8cm,fill=purple!20]
+                
+                
+                \node[unit](x1) at (-1.5,2.5){$x_1$};
+                \node[unit](x2) at (-1.5,1.5){$x_2$};
+                \node(dots) at (-1.5,0.75){\vdots};
+                \node[unit](xn) at (-1.5,-0.25){$x_n$};
+                
+                
+                \node[weight](w1) at (0.25,2.5){$w_1$};
+                \node[weight](w2) at (0.25,1.5){$w_2$};
+                \node[weight](wn) at (0.25,-0.25){$w_n$};
+                
+                \node[sum](p) at (2,1){$\Sigma$};
+                \node[activation](a) at (3.5,1){$H$};
+                \node[output](o) at (5,1){$y$};
+                
+                \draw (x1) -- (w1);
+                \draw (x2) -- (w2);
+                \draw (xn) -- (wn);
+                \draw[->] (w1) -- (p);
+                \draw[->] (w2) -- (p);
+                \draw[->] (wn) -- (p);
+                \draw[->] (p) -- (a);
+                \draw[->] (a) -- (o);
+                
+                \draw [decorate,decoration={brace,amplitude=10pt},xshift=-4pt,yshift=0pt] (-2,3) -- (-0.75,3) node [black,midway,yshift=+0.6cm]{entrada};
+                \draw [decorate,decoration={brace,amplitude=10pt},xshift=-4pt,yshift=0pt] (-0.25,3) -- (1,3) node [black,midway,yshift=+0.6cm]{pesos};
+                \draw [decorate,decoration={brace,amplitude=10pt},xshift=-4pt,yshift=0pt] (4.5,1.5) -- (5.75,1.5) node [black,midway,yshift=+0.6cm]{salida};
+                
+                \draw[->] (1,-1.75)node[sum]{$\Sigma$} -- (3,-1.75)[xshift=30]node{$\displaystyle\sum_{i=1}^{n}w_ix_i$};
+            \end{tikzpicture}
+        \end{center}
+    \end{frame}
+    
+    % -------- Bias y función de activación 01 --
+    \begin{frame}{Bias y función de activación}{Intro al aprendizaje profundo}
+        La operación matemática que realiza la neurona para la decisión de umbralización se puede escribir como:
+        
+        $$ f(\textbf{x}) =
+        \begin{cases}
+            0 & \text{si $\displaystyle\sum_{i}w_ix_i <$ umbral o threshold} \\
+            1 & \text{si $\displaystyle\sum_{i}w_ix_i \geq$ umbral o threshold} \\
+        \end{cases}$$
+        
+        donde $i \in \{1, 2, ..., n\}$, y así, $\textbf{x} = (x_1, x_2, ..., x_n)$.
+    \end{frame}
+    
+    % -------- Bias y función de activación 01 --
+    \begin{frame}{Bias y función de activación}{Intro al aprendizaje profundo}
+        De lo anterior, podemos despejar el umbral y escribirlo como $b$, obteniendo:
+        
+        $$ f(\textbf{x}) =
+        \begin{cases}
+            0 & \text{si $\displaystyle\sum_{i}w_ix_i + b < 0$} \\
+            1 & \text{si $\displaystyle\sum_{i}w_ix_i + b > 0$} \\
+        \end{cases}$$
+        
+        donde $\textbf{x} = (x_1, x_2, ..., x_n)$ y $i \in \{1, 2, ..., n\}$.
+
+        A esto que escribimos como $b$, también se le conoce como \textbf{bias}, y una interpretación es describir \textit{qué tan susceptible es la neurona a \textbf{dispararse}} (como se exploró en el ejemplo práctico de la identificación de la actividad de Julieta).
+    \end{frame}
+    
+    % -------- Bias y función de activación 03 --
+    \begin{frame}{Bias y función de activación}{Intro al aprendizaje profundo}
+        \begin{figure}
+            \centering
+            \includegraphics[width=0.425\textwidth]{heavyside} $\longrightarrow$
+            \includegraphics[width=0.45\textwidth]{sigmoid-plot}
+        \end{figure}
+    \end{frame}
+    
+    % ----------- El Perceptrón 01 --------------
+    \subsection{Perceptrón}
+    
+    \begin{frame}{El Perceptrón}{Intro al aprendizaje profundo}
+        \begin{figure}
+            \centering
+            \includegraphics[width=0.9\textwidth]{rosenblatt}
+            \caption{Frank Rosenblatt}
+        \end{figure}
+    \end{frame}
+    
+    
+    % ----------- El Perceptrón 02 --------------
+    \begin{frame}{El Perceptrón}{Intro al aprendizaje profundo}
+        \begin{center}
+            \begin{tikzpicture}[shorten >=1pt]
+                \tikzstyle{unit}=[draw,shape=circle,minimum size=0.8cm,fill=green!20]
+                \tikzstyle{bias}=[draw,shape=circle,minimum size=0.8cm,fill=green!10]
+                \tikzstyle{weight}=[draw,shape=rectangle,minimum size=0.5cm,fill=gray!20]
+                \tikzstyle{sum}=[draw,shape=circle,minimum size=1cm,fill=yellow!20]
+                \tikzstyle{activation}=[draw,shape=rectangle,minimum size=0.5cm,fill=blue!20]
+                \tikzstyle{output}=[draw,shape=circle,minimum size=0.8cm,fill=purple!20]
+                
+                
+                \node[unit](x1) at (-1.5,2.5){$x_1$};
+                \node[unit](x2) at (-1.5,1.5){$x_2$};
+                \node(dots) at (-1.5,0.75){\vdots};
+                \node[unit](xn) at (-1.5,-0.25){$x_n$};
+                \node[bias](b) at (-1.5,-1.25){$b$};
+                
+                
+                \node[weight](w1) at (0.25,2.5){$w_1$};
+                \node[weight](w2) at (0.25,1.5){$w_2$};
+                \node[weight](wn) at (0.25,-0.25){$w_n$};
+                \node[weight](wb) at (0.25,-1.25){$1$};
+                
+                \node[sum](p) at (2,1){$\Sigma$};
+                \node[activation](a) at (3.5,1){$\sigma$};
+                \node[output](o) at (5,1){$y$};
+                
+                \draw (x1) -- (w1);
+                \draw (x2) -- (w2);
+                \draw (xn) -- (wn);
+                \draw (b) -- (wb);
+                \draw[->] (w1) -- (p);
+                \draw[->] (w2) -- (p);
+                \draw[->] (wn) -- (p);
+                \draw[->] (wb) -- (p);
+                \draw[->] (p) -- (a);
+                \draw[->] (a) -- (o);
+            \end{tikzpicture}
+            
+            \vspace{20pt}
+            ¡Y se agrega un algoritmo formal de entrenamiento!\\(\textit{Backpropagation})
+        \end{center}
+    \end{frame}
+    
+    % ----------- Idea de entrenamiento 01 ------
+    \begin{frame}{Idea intuitiva de entrenamiento}{Intro al aprendizaje profundo}
+        \begin{figure}
+            \centering
+            \includegraphics[width=0.9\textwidth]{training-idea-01}
+        \end{figure}
+    \end{frame}
+    
+    % ----------- Idea de entrenamiento 02 ------
+    \begin{frame}{Idea intuitiva de entrenamiento}{Intro al aprendizaje profundo}
+    \begin{figure}
+        \centering
+        \includegraphics[width=0.9\textwidth]{training-idea-02}
+    \end{figure}
+    \end{frame}
+    
+    % ----------- Idea de entrenamiento 03 ------
+    \begin{frame}{Idea intuitiva de entrenamiento}{Intro al aprendizaje profundo}
+    \begin{figure}
+        \centering
+        \includegraphics[width=0.9\textwidth]{training-idea-03}
+    \end{figure}
+    \end{frame}
+    
+    % ----------- Idea de entrenamiento 04 ------
+    \begin{frame}{Idea intuitiva de entrenamiento}{Intro al aprendizaje profundo}
+        \begin{figure}
+            \centering
+            \includegraphics[width=0.9\textwidth]{training-idea-04}
+        \end{figure}
+    \end{frame}
+    
+    % ----------- Idea de entrenamiento 05 ------
+    \begin{frame}{Medición del error}{Intro al aprendizaje profundo}
+        Dado el vector $X$, \textbf{¿qué vector ($A, B, C$) se le \textit{parece} más?}
+        
+        \begin{align*}
+            X &= \begin{bmatrix}
+                0.5 \\
+                0.3 \\
+                0.7
+            \end{bmatrix}
+        \end{align*}
+        
+        \begin{align*}
+            A = \begin{bmatrix}
+                0.3 \\
+                0.3 \\
+                0.3
+            \end{bmatrix},
+            B = \begin{bmatrix}
+                0.6 \\
+                0.2 \\
+                0.6
+            \end{bmatrix},
+            C = \begin{bmatrix}
+                -0.5 \\
+                -0.3 \\
+                -0.7
+            \end{bmatrix}
+        \end{align*}
+    \end{frame}
+    
+    % ----------- Idea de entrenamiento 05 ------
+    \begin{frame}{Medición del error}{Intro al aprendizaje profundo}
+        Dado el vector $X$, \textbf{¿qué vector ($A, B, C$) se le \textit{parece} más?}
+        
+        \begin{align*}
+            X &= \begin{bmatrix}
+                0.5 \\
+                0.3 \\
+                0.7
+            \end{bmatrix}
+        \end{align*}
+        
+        \begin{align*}
+            A = \begin{bmatrix}
+                0.3 \\
+                0.3 \\
+                0.3
+            \end{bmatrix},
+            \colorbox{green!20}{$B = \begin{bmatrix}
+                0.6 \\
+                0.2 \\
+                0.6
+            \end{bmatrix}$},
+            C = \begin{bmatrix}
+                -0.5 \\
+                -0.3 \\
+                -0.7
+            \end{bmatrix}
+        \end{align*}
+    \end{frame}
+    
+    % ----------- Idea de entrenamiento 06 ------
+    \begin{frame}{Optimización del error}{Intro al aprendizaje profundo}
+        \begin{columns}
+            % Columna izquierda
+            \begin{column}{0.6\textwidth}
+                \begin{itemize}
+                    \item \textbf{Error:} Es una función.
+                    \item \textbf{Optimizar:} Maximizar o minimizar.
+                    \item \textbf{Gradiente:} Derivada de una función vectorial, proporciona información sobre máximos o mínimos.
+                    \item \textbf{Descenso de gradiente:} Algoritmo para, iterativamente, buscar optimizar una función.
+                    \item \textbf{Limitantes:} 
+                        \begin{itemize}
+                            \item Max's/min's locales.
+                            \item Tamaño de salto en gradiente
+                        \end{itemize}
+                \end{itemize}
+            \end{column}
+            % Columna derecha
+            \begin{column}{0.35\textwidth}
+                \begin{figure}
+                    \centering
+                    \includegraphics[width=1\textwidth]{gd}
+                \end{figure}
+            \end{column}
+        \end{columns}
+    \end{frame}
+    
+    % ----------- Observaciones -------------------
+    \begin{frame}{Observaciones}{Intro al aprendizaje profundo}
+        Hasta este punto, debemos notar que hay algunas observaciones importantes:
+        \begin{itemize}
+            \item \textbf{TLUs:} 
+            \begin{itemize}
+                \item No existe un algoritmo de aprendizaje formal → Búsqueda de pesos.
+                \item Se limita a propagación hacia adelante (\textit{forward pass/forward propagation})
+            \end{itemize}
+            \item \textbf{Perceptrón:} Puede utilizar retropropagación, introducido en 1958.
+            \item \textbf{Retropropagación:} Algoritmo para realizar ajustes en los valores de los pesos.
+            \item \textbf{Limitantes:} Separabilidad lineal.
+            \item \textbf{¿Alguna otra observación?}
+        \end{itemize}
+    \end{frame}
+    
+    % ----------- Ejercicio ---------------------
+    \begin{frame}{Ejercicio}{Intro al aprendizaje profundo}
+        \begin{center}
+            {\Large \textbf{Ejercicio: Manzanas vs. Naranjas}}
+        \end{center}
+        \begin{figure}
+            \centering
+            \includegraphics[width=0.4\textwidth]{apple-orange}
+        \end{figure}
+    \end{frame}
+    
+    % ----------- El Perceptrón Multicapa -------
+    %\subsection{Perceptrón multicapa}
+    
+    %\begin{frame}{El perceptrón multicapa}{Intro al aprendizaje profundo}
+    %    \begin{block}{Block title}
+    %        Cras viverra metus rhoncus sem.
+    %    \end{block}
+    %\end{frame}
+    
+    % ----------- Aprendizaje -------------------
+    %\subsection{Aprendizaje}
+    
+    %\begin{frame}{Aprendizaje}{Intro al aprendizaje profundo}
+    %    \begin{block}{Block title}
+    %        Cras viverra metus rhoncus sem.
+    %    \end{block}
+    %\end{frame}
+    
+    % ----------- Regularización -------------------
+    %\subsection{Regularización}
+    
+    %\begin{frame}{Regularización}{Intro al aprendizaje profundo}
+    %    \begin{block}{Block title}
+    %        Cras viverra metus rhoncus sem.
+    %    \end{block}
+    %\end{frame}
+    
+    % Mover/eliminar conforme se agregan los contenidos
+    \subsection{Perceptrón multicapa}
+    \subsection{Aprendizaje}
+    \subsection{Regularización}
 	\section{Modelado profundo de secuencias}
 	\section{Visión computacional profunda}
 	\section{Modelado generativo profundo}
 	\section{Panorama actual y futuro}
     
-    \begin{frame}{Contexto histórico}{Intro al aprendizaje profundo}
-        \begin{block}{Block title}
-            Cras viverra metus rhoncus sem.
-        \end{block}
+    % ----------- Lecturas recomendadas 01 ------
+    \begin{frame}{Lecturas recomendadas}{Intro al aprendizaje profundo}
+        \begin{itemize}
+            \item Breve historia sobre \colorbox{blue!10}{\href{https://telefonicatech.com/blog/historia-de-la-ia-frank-rosenblatt-y-e}{el perceptrón}}
+            \item Post sobre \colorbox{blue!10}{\href{https://lamaquinaoraculo.com/deep-learning/el-perceptron-de-rosenblatt/}{el perceptrón de Rosenblatt}}
+            \item Post sobre la \colorbox{blue!10}{\href{https://lamaquinaoraculo.com/deep-learning/la-funcion-de-activacion/}{función de activación}}
+            \item \colorbox{blue!10}{\href{https://ploomber.io/blog/threshold/}{Selección de threshold}} para clasificadores binarios
+            \item Post sobre \colorbox{blue!10}{\href{https://www.ibm.com/mx-es/topics/neural-networks}{redes neuronales}} por IBM
+        \end{itemize}
     \end{frame}
+
 	
 \end{document}
 
