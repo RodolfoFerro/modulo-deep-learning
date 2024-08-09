@@ -5,6 +5,7 @@
 
 \usepackage{tikz}
 \usetikzlibrary{decorations.pathreplacing}
+\usepackage{etoolbox}
 \usepackage{listofitems} % for \readlist to create arrays
 \tikzstyle{mynode}=[thick,draw=blue,fill=blue!20,circle,minimum size=15]
 %\setbeameroption{show notes on second screen }
@@ -16,6 +17,7 @@ delaunay,
 amurmapleblack
 ]{Amurmaple}
 
+\usepackage{amsmath}
 \usepackage{lipsum}
 \usepackage{emoji}
 \graphicspath{ {./images/} }
@@ -484,7 +486,7 @@ amurmapleblack
         \end{columns}
     \end{frame}
     
-    % ----------- Observaciones -------------------
+    % ----------- Observaciones 01 ----------------
     \begin{frame}{Observaciones}{Intro al aprendizaje profundo}
         Hasta este punto, debemos notar que hay algunas observaciones importantes:
         \begin{itemize}
@@ -500,7 +502,7 @@ amurmapleblack
         \end{itemize}
     \end{frame}
     
-    % ----------- Ejercicio ---------------------
+    % ----------- Ejercicio 01 ------------------
     \begin{frame}{Ejercicio}{Intro al aprendizaje profundo}
         \begin{center}
             {\Large \textbf{Ejercicio: Manzanas vs. Naranjas}}
@@ -511,42 +513,6 @@ amurmapleblack
         \end{figure}
     \end{frame}
     
-    % ----------- El Perceptrón Multicapa -------
-    %\subsection{Perceptrón multicapa}
-    
-    %\begin{frame}{El perceptrón multicapa}{Intro al aprendizaje profundo}
-    %    \begin{block}{Block title}
-    %        Cras viverra metus rhoncus sem.
-    %    \end{block}
-    %\end{frame}
-    
-    % ----------- Aprendizaje -------------------
-    %\subsection{Aprendizaje}
-    
-    %\begin{frame}{Aprendizaje}{Intro al aprendizaje profundo}
-    %    \begin{block}{Block title}
-    %        Cras viverra metus rhoncus sem.
-    %    \end{block}
-    %\end{frame}
-    
-    % ----------- Regularización -------------------
-    %\subsection{Regularización}
-    
-    %\begin{frame}{Regularización}{Intro al aprendizaje profundo}
-    %    \begin{block}{Block title}
-    %        Cras viverra metus rhoncus sem.
-    %    \end{block}
-    %\end{frame}
-    
-    % Mover/eliminar conforme se agregan los contenidos
-    \subsection{Perceptrón multicapa}
-    \subsection{Aprendizaje}
-    \subsection{Regularización}
-	\section{Modelado profundo de secuencias}
-	\section{Visión computacional profunda}
-	\section{Modelado generativo profundo}
-	\section{Panorama actual y futuro}
-    
     % ----------- Lecturas recomendadas 01 ------
     \begin{frame}{Lecturas recomendadas}{Intro al aprendizaje profundo}
         \begin{itemize}
@@ -555,6 +521,792 @@ amurmapleblack
             \item Post sobre la \colorbox{blue!10}{\href{https://lamaquinaoraculo.com/deep-learning/la-funcion-de-activacion/}{función de activación}}
             \item \colorbox{blue!10}{\href{https://ploomber.io/blog/threshold/}{Selección de threshold}} para clasificadores binarios
             \item Post sobre \colorbox{blue!10}{\href{https://www.ibm.com/mx-es/topics/neural-networks}{redes neuronales}} por IBM
+        \end{itemize}
+    \end{frame}
+    
+    % ----------- Producto matricial 01 ---------
+    \subsection{Perceptrón multicapa}
+    \begin{frame}{Producto matricial}{Intro al aprendizaje profundo}
+        Recordemos cómo opera el producto matricial:
+        
+        $$\begin{bmatrix}
+            2 & 5 & 2\\
+            1 & 0 & -2\\
+            3 & 1 & 1
+        \end{bmatrix}
+        \begin{bmatrix}
+        -2 & 1 & 0\\
+        -2 & 2 & 1\\
+        0 & 0 & 3
+        \end{bmatrix} = 
+        \begin{bmatrix}
+         &  & \\
+         &  & \\
+         &  & 
+        \end{bmatrix}$$
+    \end{frame}
+    
+    % ----------- Producto matricial 02 ---------
+    \begin{frame}{Producto matricial}{Intro al aprendizaje profundo}
+        Recordemos cómo opera el producto matricial:
+        
+        $$\begin{bmatrix}
+            \colorbox{blue!10}{2} & \colorbox{blue!10}{5} & \colorbox{blue!10}{2}\\
+            1 & 0 & -2\\
+            3 & 1 & 1
+        \end{bmatrix}
+        \begin{bmatrix}
+            \colorbox{blue!10}{-2} & 1 & 0\\
+            \colorbox{blue!10}{-2} & 2 & 1\\
+            \colorbox{blue!10}{0} & 0 & 3
+        \end{bmatrix} = 
+        \begin{bmatrix}
+           \colorbox{blue!10}{14} &  & \\
+            &  & \\
+            &  & 
+        \end{bmatrix}$$
+        
+        $$(2 \cdot -2) + (5 \cdot -2) + (2 \cdot 0) = -14$$
+    \end{frame}
+    
+    % ----------- Producto matricial 03 ---------
+    \begin{frame}{Producto matricial}{Intro al aprendizaje profundo}
+        Recordemos cómo opera el producto matricial:
+        
+        $$\begin{bmatrix}
+            \colorbox{blue!10}{2} & \colorbox{blue!10}{5} & \colorbox{blue!10}{2}\\
+            1 & 0 & -2\\
+            3 & 1 & 1
+        \end{bmatrix}
+        \begin{bmatrix}
+            -2 & \colorbox{blue!10}{1} & 0\\
+            -2 & \colorbox{blue!10}{2} & 1\\
+            0 & \colorbox{blue!10}{0} & 3
+        \end{bmatrix} = 
+        \begin{bmatrix}
+            14 & \colorbox{blue!10}{12} & \\
+            &  & \\
+            &  & 
+        \end{bmatrix}$$
+        
+        $$(2 \cdot 1) + (5 \cdot 2) + (2 \cdot 0) = 12$$
+    \end{frame}
+    
+    % ----------- Producto matricial 04 ---------
+    \begin{frame}{Producto matricial}{Intro al aprendizaje profundo}
+        Recordemos cómo opera el producto matricial:
+        
+        $$\begin{bmatrix}
+            \colorbox{blue!10}{2} & \colorbox{blue!10}{5} & \colorbox{blue!10}{2}\\
+            1 & 0 & -2\\
+            3 & 1 & 1
+        \end{bmatrix}
+        \begin{bmatrix}
+        -2 & 1 & \colorbox{blue!10}{0}\\
+        -2 & 2 & \colorbox{blue!10}{1}\\
+        0 & 0 & \colorbox{blue!10}{3}
+        \end{bmatrix} = 
+        \begin{bmatrix}
+            14 & 12 & \colorbox{blue!10}{11}\\
+            &  & \\
+            &  & 
+        \end{bmatrix}$$
+        
+        $$(2 \cdot 0) + (5 \cdot 1) + (2 \cdot 3) = 11$$
+    \end{frame}
+    
+    % ----------- Producto matricial 05 ---------
+    \begin{frame}{Producto matricial}{Intro al aprendizaje profundo}
+        Recordemos cómo opera el producto matricial:
+        
+        $$\begin{bmatrix}
+            2 & 5 & 2\\
+            \colorbox{blue!10}{1} & \colorbox{blue!10}{0} & \colorbox{blue!10}{-2}\\
+            3 & 1 & 1
+        \end{bmatrix}
+        \begin{bmatrix}
+            \colorbox{blue!10}{-2} & 1 & 0\\
+            \colorbox{blue!10}{-2} & 2 & 1\\
+            \colorbox{blue!10}{0} & 0 & 3
+        \end{bmatrix} = 
+        \begin{bmatrix}
+            14 & 12 & 11\\
+            \colorbox{blue!10}{-2} &  & \\
+            &  & 
+        \end{bmatrix}$$
+        
+        $$(1 \cdot -2) + (0 \cdot -2) + (-2 \cdot 0) = -2$$
+    \end{frame}
+    
+    % ----------- Producto matricial 06 ---------
+    \begin{frame}{Producto matricial}{Intro al aprendizaje profundo}
+        Recordemos cómo opera el producto matricial:
+        
+        $$\begin{bmatrix}
+            2 & 5 & 2\\
+            \colorbox{blue!10}{1} & \colorbox{blue!10}{0} & \colorbox{blue!10}{-2}\\
+            3 & 1 & 1
+        \end{bmatrix}
+        \begin{bmatrix}
+            \colorbox{blue!10}{-2} & 1 & 0\\
+            \colorbox{blue!10}{-2} & 2 & 1\\
+            \colorbox{blue!10}{0} & 0 & 3
+        \end{bmatrix} = 
+        \begin{bmatrix}
+            14 & 12 & 11\\
+            \colorbox{blue!10}{-2} &  & \\
+            &  & 
+        \end{bmatrix}$$
+        
+        $$\cdots$$
+    \end{frame}
+    
+    % ----------- Producto matricial 07 ---------
+    \begin{frame}{Producto matricial}{Intro al aprendizaje profundo}
+        Recordemos cómo opera el producto matricial:
+        
+        $$\begin{bmatrix}
+            2 & 5 & 2\\
+            1 & 0 & -2\\
+            3 & 1 & 1
+        \end{bmatrix}
+        \begin{bmatrix}
+            -2 & 1 & 0\\
+            -2 & 2 & 1\\
+            0 & 0 & 3
+        \end{bmatrix} = 
+        \begin{bmatrix}
+            14 & 12 & 11\\
+            -2 & 1 & -6\\
+            -8 & 5 & 4
+        \end{bmatrix}$$
+    \end{frame}
+    
+    % ----------- El Perceptrón 03 --------------
+    \begin{frame}{El Perceptrón}{Intro al aprendizaje profundo}
+        \begin{center}
+            \begin{tikzpicture}[shorten >=1pt]
+                \tikzstyle{unit}=[draw,shape=circle,minimum size=0.8cm,fill=green!20]
+                \tikzstyle{bias}=[draw,shape=circle,minimum size=0.8cm,fill=green!10]
+                \tikzstyle{weight}=[draw,shape=rectangle,minimum size=0.5cm,fill=gray!20]
+                \tikzstyle{sum}=[draw,shape=circle,minimum size=1cm,fill=yellow!20]
+                \tikzstyle{activation}=[draw,shape=rectangle,minimum size=0.5cm,fill=blue!20]
+                \tikzstyle{output}=[draw,shape=circle,minimum size=0.8cm,fill=purple!20]
+                
+                
+                \node[unit](x1) at (-1.5,2.5){$x_1$};
+                \node[unit](x2) at (-1.5,1.5){$x_2$};
+                \node(dots) at (-1.5,0.75){\vdots};
+                \node[unit](xn) at (-1.5,-0.25){$x_n$};
+                \node[bias](b) at (-1.5,-1.25){$b$};
+                
+                
+                \node[weight](w1) at (0.25,2.5){$w_1$};
+                \node[weight](w2) at (0.25,1.5){$w_2$};
+                \node[weight](wn) at (0.25,-0.25){$w_n$};
+                \node[weight](wb) at (0.25,-1.25){$1$};
+                
+                \node[sum](p) at (2,1){$\Sigma$};
+                \node[activation](a) at (3.5,1){$f$};
+                \node[output](o) at (5,1){$\hat{y}$};
+                
+                \draw (x1) -- (w1);
+                \draw (x2) -- (w2);
+                \draw (xn) -- (wn);
+                \draw (b) -- (wb);
+                \draw[->] (w1) -- (p);
+                \draw[->] (w2) -- (p);
+                \draw[->] (wn) -- (p);
+                \draw[->] (wb) -- (p);
+                \draw[->] (p) -- (a);
+                \draw[->] (a) -- (o);
+            \end{tikzpicture}
+            \vspace{10pt}
+            $$\hat{y} = f\left(\displaystyle\sum_{i}^{n}w_ix_i + b\right)$$
+        \end{center}
+    \end{frame}
+    
+    % ----------- El Perceptrón 04 --------------
+    \begin{frame}{El Perceptrón}{Intro al aprendizaje profundo}
+        \begin{center}
+            \begin{tikzpicture}[shorten >=1pt]
+                \tikzstyle{unit}=[draw,shape=circle,minimum size=0.8cm,fill=green!20]
+                \tikzstyle{bias}=[draw,shape=circle,minimum size=0.8cm,fill=green!10]
+                \tikzstyle{weight}=[draw,shape=rectangle,minimum size=0.5cm,fill=gray!20]
+                \tikzstyle{sum}=[draw,shape=circle,minimum size=1cm,fill=yellow!20]
+                \tikzstyle{activation}=[draw,shape=rectangle,minimum size=0.5cm,fill=blue!20]
+                \tikzstyle{output}=[draw,shape=circle,minimum size=0.8cm,fill=purple!20]
+                
+                
+                \node[unit](x1) at (-1.5,2.5){$x_1$};
+                \node[unit](x2) at (-1.5,1.5){$x_2$};
+                \node(dots) at (-1.5,0.75){\vdots};
+                \node[unit](xn) at (-1.5,-0.25){$x_n$};
+                \node[bias](b) at (-1.5,-1.25){$b$};
+                
+                
+                \node[weight](w1) at (0.25,2.5){$w_1$};
+                \node[weight](w2) at (0.25,1.5){$w_2$};
+                \node[weight](wn) at (0.25,-0.25){$w_n$};
+                \node[weight](wb) at (0.25,-1.25){$1$};
+                
+                \node[sum](p) at (2,1){$\Sigma$};
+                \node[activation](a) at (3.5,1){$f$};
+                \node[output](o) at (5,1){$\hat{y}$};
+                
+                \draw (x1) -- (w1);
+                \draw (x2) -- (w2);
+                \draw (xn) -- (wn);
+                \draw (b) -- (wb);
+                \draw[->] (w1) -- (p);
+                \draw[->] (w2) -- (p);
+                \draw[->] (wn) -- (p);
+                \draw[->] (wb) -- (p);
+                \draw[->] (p) -- (a);
+                \draw[->] (a) -- (o);
+            \end{tikzpicture}
+            \vspace{10pt}
+            $$\displaystyle\sum_{i}^{n}w_ix_i = w_1x_1 + w_2x_2 + \cdots + w_nx_n$$
+        \end{center}
+    \end{frame}
+    
+    % ----------- El Perceptrón 05 --------------
+    \begin{frame}{El Perceptrón}{Intro al aprendizaje profundo}
+        \begin{center}
+            \begin{tikzpicture}[shorten >=1pt]
+                \tikzstyle{unit}=[draw,shape=circle,minimum size=0.8cm,fill=green!20]
+                \tikzstyle{bias}=[draw,shape=circle,minimum size=0.8cm,fill=green!10]
+                \tikzstyle{weight}=[draw,shape=rectangle,minimum size=0.5cm,fill=gray!20]
+                \tikzstyle{sum}=[draw,shape=circle,minimum size=1cm,fill=yellow!20]
+                \tikzstyle{activation}=[draw,shape=rectangle,minimum size=0.5cm,fill=blue!20]
+                \tikzstyle{output}=[draw,shape=circle,minimum size=0.8cm,fill=purple!20]
+                
+                
+                \node[unit](x1) at (-1.5,2.5){$x_1$};
+                \node[unit](x2) at (-1.5,1.5){$x_2$};
+                \node(dots) at (-1.5,0.75){\vdots};
+                \node[unit](xn) at (-1.5,-0.25){$x_n$};
+                \node[bias](b) at (-1.5,-1.25){$b$};
+                
+                
+                \node[weight](w1) at (0.25,2.5){$w_1$};
+                \node[weight](w2) at (0.25,1.5){$w_2$};
+                \node[weight](wn) at (0.25,-0.25){$w_n$};
+                \node[weight](wb) at (0.25,-1.25){$1$};
+                
+                \node[sum](p) at (2,1){$\Sigma$};
+                \node[activation](a) at (3.5,1){$f$};
+                \node[output](o) at (5,1){$\hat{y}$};
+                
+                \draw (x1) -- (w1);
+                \draw (x2) -- (w2);
+                \draw (xn) -- (wn);
+                \draw (b) -- (wb);
+                \draw[->] (w1) -- (p);
+                \draw[->] (w2) -- (p);
+                \draw[->] (wn) -- (p);
+                \draw[->] (wb) -- (p);
+                \draw[->] (p) -- (a);
+                \draw[->] (a) -- (o);
+            \end{tikzpicture}
+            \vspace{10pt}
+            $$\mathbf{w^{T}}\mathbf{x} = [w_1 w_2 \cdots w_n] \begin{bmatrix}
+                x_1 \\
+                x_2 \\
+                \vdots \\
+                x_n \\
+            \end{bmatrix} = w_1x_1 + w_2x_2 + \cdots + w_nx_n$$
+        \end{center}
+    \end{frame}
+    
+    % ----------- Producto matricial 08 ---------
+    \begin{frame}{Producto matricial}{Intro al aprendizaje profundo}
+        \begin{figure}
+            \centering
+            \includegraphics[width=1\textwidth]{nns-01}
+        \end{figure}
+    \end{frame}
+    
+    % ----------- Producto matricial 09 ---------
+    \begin{frame}{Producto matricial}{Intro al aprendizaje profundo}
+        \begin{figure}
+            \centering
+            \includegraphics[width=1\textwidth]{nns-02}
+        \end{figure}
+    \end{frame}
+    
+    % --------- Composición de funciones 01 -----
+    \begin{frame}{Composición de funciones}{Intro al aprendizaje profundo}
+        \begin{figure}
+            \centering
+            \includegraphics[width=1\textwidth]{nns-03}
+        \end{figure}
+    \end{frame}
+    
+    % --------- Composición de funciones 02 -----
+    \begin{frame}{Composición de funciones}{Intro al aprendizaje profundo}
+        \begin{figure}
+            \centering
+            \includegraphics[width=1\textwidth]{nns-04}
+        \end{figure}
+    \end{frame}
+
+    % --------- Funciones de activación ---------
+    \begin{frame}{Funciones de activación}{Intro al aprendizaje profundo}
+        \begin{figure}
+            \centering
+            \includegraphics[width=0.8\textwidth]{activation-functions}
+            $$f(x) = \sigma(x) = \dfrac{1}{1 + e^{-x}} \Rightarrow f'(x) = f(x)(1 - f(x))$$
+            $$f(x) = tanh(x) = \dfrac{e^x - e^{-x}}{e^x + e^{-x}} \Rightarrow f'(x) = 1 - f(x)^2$$
+        \end{figure}
+    \end{frame}
+    
+    % ----------- El Perceptrón Multicapa 01 ----
+    \begin{frame}{El perceptrón multicapa}{Intro al aprendizaje profundo}
+        \colorlet{myred}{red!80!black}
+        \colorlet{myblue}{blue!80!black}
+        \colorlet{mygreen}{green!60!black}
+        \colorlet{mydarkred}{myred!40!black}
+        \colorlet{mydarkblue}{myblue!40!black}
+        \colorlet{mydarkgreen}{mygreen!40!black}
+        \tikzstyle{node}=[very thick,circle,draw=myblue,minimum size=22,inner sep=0.5,outer sep=0.6]
+        \tikzstyle{connect}=[->,thick,mydarkblue,shorten >=1]
+        \tikzset{ % node styles, numbered for easy mapping with \nstyle
+            node 1/.style={node,mydarkgreen,draw=mygreen,fill=mygreen!25},
+            node 2/.style={node,mydarkblue,draw=myblue,fill=myblue!20},
+            node 3/.style={node,mydarkred,draw=myred,fill=myred!20},
+        }
+        \def\nstyle{int(\lay<\Nnodlen?min(2,\lay):3)} % map layer number onto 1, 2, or 3
+        
+        \begin{center}
+            \begin{tikzpicture}[x=2.4cm,y=1	.2cm]
+                \readlist\Nnod{4,3,2} % array of number of nodes per layer
+                \readlist\Nstr{n,m,k} % array of string number of nodes per layer
+                \readlist\Cstr{x,h^{(\prev)},y} % array of coefficient symbol per layer
+                \def\yshift{0.55} % shift last node for dots
+                
+                % LOOP over LAYERS
+                \foreachitem \N \in \Nnod{
+                    \def\lay{\Ncnt} % alias of index of current layer
+                    \pgfmathsetmacro\prev{int(\Ncnt-1)} % number of previous layer
+                    \foreach \i [evaluate={\c=int(\i==\N); \y=\N/2-\i-\c*\yshift;
+                        \x=\lay; \n=\nstyle;
+                        \index=(\i<\N?int(\i):"\Nstr[\n]");}] in {1,...,\N}{ % loop over nodes
+                        % NODES
+                        \node[node \n] (N\lay-\i) at (\x,\y) {$\strut\Cstr[\n]_{\index}$};
+                        
+                        % CONNECTIONS
+                        \ifnumcomp{\lay}{>}{1}{ % connect to previous layer
+                            \foreach \j in {1,...,\Nnod[\prev]}{ % loop over nodes in previous layer
+                                \draw[white,line width=1.2,shorten >=1] (N\prev-\j) -- (N\lay-\i);
+                                \draw[connect] (N\prev-\j) -- (N\lay-\i);
+                            }
+                            \ifnum \lay=\Nnodlen
+                            \draw[connect] (N\lay-\i) --++ (0.5,0); % arrows out
+                            \fi
+                        }{
+                            \draw[connect] (0.5,\y) -- (N\lay-\i); % arrows in
+                        }
+                        
+                    }
+                    \path (N\lay-\N) --++ (0,1+\yshift) node[midway,scale=1.6] {$\vdots$}; % dots
+                }
+                
+                % LABELS
+                \node[above=3,align=center,mydarkgreen] at (N1-1.90) {Capa de \\[-0.2em]entrada};
+                \node[above=2,align=center,mydarkblue] at (N2-1.90) {Capas\\[-0.2em]ocultas};
+                \node[above=3,align=center,mydarkred] at (N\Nnodlen-1.90) {Capa de\\[-0.2em]salida};
+                
+            \end{tikzpicture}
+        \end{center}
+    \end{frame}
+    
+    % ----------- El Perceptrón Multicapa 01 ----
+    \begin{frame}{El perceptrón multicapa}{Intro al aprendizaje profundo}
+        \tikzstyle{node}=[very thick,circle,draw=myblue,minimum size=22,inner sep=0.5,outer sep=0.6]
+        \tikzstyle{connect}=[->,thick,mydarkblue,shorten >=1]
+        \tikzset{ % node styles, numbered for easy mapping with \nstyle
+            node 1/.style={node,mydarkgreen,draw=mygreen,fill=mygreen!25},
+            node 2/.style={node,mydarkblue,draw=myblue,fill=myblue!20},
+            node 3/.style={node,mydarkred,draw=myred,fill=myred!20},
+        }
+        \def\nstyle{int(\lay<\Nnodlen?min(2,\lay):3)} % map layer number onto 1, 2, or 3
+        \begin{center}
+            \begin{tikzpicture}[x=2.4cm,y=1	.2cm]
+                \readlist\Nnod{3,3,1} % array of number of nodes per layer
+                \readlist\Nstr{n,m,1} % array of string number of nodes per layer
+                \readlist\Cstr{x,h^{(\prev)},y} % array of coefficient symbol per layer
+                \def\yshift{0.55} % shift last node for dots
+                
+                % LOOP over LAYERS
+                \foreachitem \N \in \Nnod{
+                    \def\lay{\Ncnt} % alias of index of current layer
+                    \pgfmathsetmacro\prev{int(\Ncnt-1)} % number of previous layer
+                    \foreach \i [evaluate={\c=int(\i==\N); \y=\N/2-\i-\c*\yshift;
+                        \x=\lay; \n=\nstyle;
+                        \index=(\i<\N?int(\i):"\Nstr[\n]");}] in {1,...,\N}{ % loop over nodes
+                        % NODES
+                        \node[node \n] (N\lay-\i) at (\x,\y) {$\strut\Cstr[\n]_{\index}$};
+                        
+                        % CONNECTIONS
+                        \ifnumcomp{\lay}{>}{1}{ % connect to previous layer
+                            \foreach \j in {1,...,\Nnod[\prev]}{ % loop over nodes in previous layer
+                                \draw[white,line width=1.2,shorten >=1] (N\prev-\j) -- (N\lay-\i);
+                                \draw[connect] (N\prev-\j) -- (N\lay-\i);
+                            }
+                            \ifnum \lay=\Nnodlen
+                            \draw[connect] (N\lay-\i) --++ (0.5,0); % arrows out
+                            \fi
+                        }{
+                            \draw[connect] (0.5,\y) -- (N\lay-\i); % arrows in
+                        }
+                        
+                    }
+                    \path (N\lay-\N) --++ (0,1+\yshift) node[midway,scale=1.6] {$\vdots$}; % dots
+                }
+                
+                % LABELS
+                \node[above=3,align=center,mydarkgreen] at (N1-1.90) {Capa de \\[-0.2em]entrada};
+                \node[above=2,align=center,mydarkblue] at (N2-1.90) {Capas\\[-0.2em]ocultas};
+                \node[above=3,align=center,mydarkred] at (N\Nnodlen-1.90) {Capa de\\[-0.2em]salida};
+            \end{tikzpicture}
+            \vspace{10pt}\\
+            Para $\mathbf{x}^{(i)}=(x^{(i)}_1, x^{(i)}_2, \dots, x^{(i)}_n)$, $y^{(i)}$, tendríamos que la salida es $\hat{y}^{(i)}_1 = f(x^{(i)})$. 
+        \end{center}
+    \end{frame}
+    
+    % ----------- Aprendizaje 01 ----------------
+    \subsection{Aprendizaje}
+    \begin{frame}{Cuantificación del error}{Intro al aprendizaje profundo}
+        \begin{itemize}
+            \item La \textbf{función de pérdida (\textit{loss})} de nuestra red neuronal \textit{mide} el \textit{costo} asociado a predicciones incorrectas.
+            \item Si observaciones (de entrada y salida) $(x^{(i)}, y^{(i)})$ y consideramos a la salida como función de $x^{(i)}$ y $\mathbf{W}$, entonces las salidas son $\hat{y} = f(x^{(i)}; \mathbf{W})$ y la función de pérdida puede escribirse como:
+            $$\mathcal{L}(f(x^{(i)}; \mathbf{W}), y^{(i)})$$
+            Es decir, una función que mida la salida \textit{real} con la \textit{predicción}.
+            \underline{Todo esto para una observación $i$.}
+        \end{itemize}
+    \end{frame}
+    
+    % ----------- Aprendizaje 02 ----------------
+    \begin{frame}{Cuantificación del error}{Intro al aprendizaje profundo}
+        \begin{itemize}
+            \item Para todas las observaciones:
+            $$\mathbf{J(W)} = \displaystyle \dfrac{1}{n}\sum_{i=1}^n \mathcal{L}(f(x^{(i)}; \mathbf{W}), y^{(i)})$$
+            A esta función se le conoce como función de costo o función objetivo (lo que queremos minimizar).
+        \end{itemize}
+    \end{frame}
+    
+    % ----------- Aprendizaje 03 ----------------
+    \begin{frame}{Algunos ejemplos}{Intro al aprendizaje profundo}
+        \begin{itemize}
+            \item \textit{\textbf{Binary Cross Entropy Loss}}:
+            Se puede utilizar con modelos que devuelven como salida una probabilidad entre 0 y 1.
+            $$\mathbf{J(W)} = \displaystyle \dfrac{1}{n}\sum_{i=1}^n y^{(i)} \log(f(x^{(i)}; \mathbf{W})) + (1 - y^{(i)}) \log(1 - f(x^{(i)}; \mathbf{W}))$$
+            \item \textit{\textbf{Mean Squared Error (MSE) Loss}}:
+            Se puede utilizar con modelos de regresión que generan números reales continuos.
+            $$\mathbf{J(W)} = \displaystyle \dfrac{1}{n}\sum_{i=1}^n \left( y^{(i)} - f(x^{(i)}; \mathbf{W})\right)^2$$
+        \end{itemize}
+    \end{frame}
+    
+    % ----------- Aprendizaje 03 ----------------
+    \begin{frame}{Optimización del error}{Intro al aprendizaje profundo}
+        \begin{itemize}
+            \item Queremos encontrar los pesos ideales de la red neuronal, los cuales minimizan $\mathbf{J(W)}$, es decir:
+            $$\mathbf{W^*} = \displaystyle \operatorname*{argmin}_\mathbf{W} \dfrac{1}{n}\sum_{i=1}^n \mathcal{L}(f(x^{(i)}; \mathbf{W}), y^{(i)})$$
+            $$\mathbf{W^*} = \displaystyle \operatorname*{argmin}_\mathbf{W} \mathbf{J(W)}$$
+        \end{itemize}
+    \end{frame}
+    
+    % ----------- Aprendizaje 04 ----------------
+    \begin{frame}{Descenso de gradiente}{Intro al aprendizaje profundo}
+        \begin{block}{Algoritmo: Descenso de gradiente}
+            \begin{enumerate}
+                \item Inicializar los pesos aleatoriamente $\sim \mathcal{N}(0,\sigma^2)$
+                \item Repetir hasta converger:
+                \item \hspace*{8pt} Calcular el gradiente $\dfrac{\partial \mathbf{J(W)}}{\partial \mathbf{W}}$
+                \item \hspace*{8pt} Actualizar los pesos $\mathbf{W} \leftarrow \mathbf{W} - \eta \dfrac{\partial \mathbf{J(W)}}{\partial \mathbf{W}}$
+                \item Devolver pesos \textit{óptimos}
+            \end{enumerate}
+        \end{block}
+    \end{frame}
+    
+    % ----------- Aprendizaje 05 ----------------
+    \begin{frame}{Retropropagación}{Intro al aprendizaje profundo}
+        \begin{center}
+            \begin{tikzpicture}[shorten >=1pt]
+                \tikzstyle{unit1}=[draw,shape=circle,minimum size=0.8cm,fill=blue!20]
+                \tikzstyle{unit2}=[draw,shape=circle,minimum size=0.8cm,fill=green!20]
+                \tikzstyle{unit3}=[draw,shape=circle,minimum size=0.8cm,fill=purple!20]                
+                
+                \node[unit1](x) at (-2.5,0){$x$};
+                \node[unit2](z1) at (0,0){$z_1$};
+                \node[unit3](yhat) at (2.5,0){$\hat{y}$};
+                
+                
+                \draw[->] (x) -- (z1);
+                \draw[->] (z1) -- (yhat);
+                
+                \draw [decorate,xshift=-4pt,yshift=0pt] (-1.25,0) -- (-1.25,0) node [black,midway,yshift=+0.25cm]{$w_1$};
+                \draw [decorate,xshift=-4pt,yshift=0pt] (1.25,0) -- (1.25,0) node [black,midway,yshift=+0.25cm]{$w_2$};
+                
+                \draw[->] (yhat) -- (4.5,0)[xshift=15]node{$\mathbf{J(W)}$};
+            \end{tikzpicture}
+            \vspace{15pt}
+            
+            ¿Cómo se calculan los gradientes?\\
+            Con la regla de la cadena.
+        \end{center}
+    \end{frame}
+    
+    % ----------- Aprendizaje 06 ----------------
+    \begin{frame}{Retropropagación}{Intro al aprendizaje profundo}
+        \begin{center}
+            \begin{tikzpicture}[shorten >=1pt]
+                \tikzstyle{unit1}=[draw,shape=circle,minimum size=0.8cm,fill=blue!20]
+                \tikzstyle{unit2}=[draw,shape=circle,minimum size=0.8cm,fill=green!20]
+                \tikzstyle{unit3}=[draw,shape=circle,minimum size=0.8cm,fill=purple!20]                
+                
+                \node[unit1](x) at (-2.5,0){$x$};
+                \node[unit2](z1) at (0,0){$z_1$};
+                \node[unit3](yhat) at (2.5,0){$\hat{y}$};
+                
+                
+                \draw[->] (x) -- (z1);
+                \draw[->] (z1) -- (yhat);
+                
+                \draw [decorate,xshift=-4pt,yshift=0pt] (-1.25,0) -- (-1.25,0) node [black,midway,yshift=+0.25cm]{$w_1$};
+                \draw [decorate,xshift=-4pt,yshift=0pt] (1.25,0) -- (1.25,0) node [black,midway,yshift=+0.25cm]{\colorbox{yellow!20}{$w_2$}};
+                
+                \draw[->] (yhat) -- (4.5,0)[xshift=15]node{$\mathbf{J(W)}$};
+            \end{tikzpicture}
+            \vspace{10pt}
+            
+            $$\dfrac{\partial \mathbf{J(W)}}{\partial \colorbox{yellow!20}{$w_2$} } = \dfrac{\partial \mathbf{J(W)}}{\partial \hat{y}} \cdot \dfrac{\partial \hat{y}}{\partial \colorbox{yellow!20}{$w_2$}}$$
+        \end{center}
+    \end{frame}
+    
+    % ----------- Aprendizaje 07 ----------------
+    \begin{frame}{Retropropagación}{Intro al aprendizaje profundo}
+        \begin{center}
+            \begin{tikzpicture}[shorten >=1pt]
+                \tikzstyle{unit1}=[draw,shape=circle,minimum size=0.8cm,fill=blue!20]
+                \tikzstyle{unit2}=[draw,shape=circle,minimum size=0.8cm,fill=green!20]
+                \tikzstyle{unit3}=[draw,shape=circle,minimum size=0.8cm,fill=purple!20]                
+                
+                \node[unit1](x) at (-2.5,0){$x$};
+                \node[unit2](z1) at (0,0){$z_1$};
+                \node[unit3](yhat) at (2.5,0){$\hat{y}$};
+                
+                
+                \draw[->] (x) -- (z1);
+                \draw[->] (z1) -- (yhat);
+                
+                \draw [decorate,xshift=-4pt,yshift=0pt] (-1.25,0) -- (-1.25,0) node [black,midway,yshift=+0.25cm]{\colorbox{yellow!20}{$w_1$}};
+                \draw [decorate,xshift=-4pt,yshift=0pt] (1.25,0) -- (1.25,0) node [black,midway,yshift=+0.25cm]{$w_2$};
+                
+                \draw[->] (yhat) -- (4.5,0)[xshift=15]node{$\mathbf{J(W)}$};
+            \end{tikzpicture}
+            \vspace{10pt}
+            
+            $$\dfrac{\partial \mathbf{J(W)}}{\partial \colorbox{yellow!20}{$w_1$} } = \dfrac{\partial \mathbf{J(W)}}{\partial \hat{y}} \cdot \dfrac{\partial \hat{y}}{\partial \colorbox{yellow!20}{$w_1$}}$$
+        \end{center}
+    \end{frame}
+    
+    % ----------- Aprendizaje 08 ----------------
+    \begin{frame}{Retropropagación}{Intro al aprendizaje profundo}
+        \begin{center}
+            \begin{tikzpicture}[shorten >=1pt]
+                \tikzstyle{unit1}=[draw,shape=circle,minimum size=0.8cm,fill=blue!20]
+                \tikzstyle{unit2}=[draw,shape=circle,minimum size=0.8cm,fill=green!20]
+                \tikzstyle{unit3}=[draw,shape=circle,minimum size=0.8cm,fill=purple!20]                
+                
+                \node[unit1](x) at (-2.5,0){$x$};
+                \node[unit2](z1) at (0,0){$z_1$};
+                \node[unit3](yhat) at (2.5,0){$\hat{y}$};
+                
+                
+                \draw[->] (x) -- (z1);
+                \draw[->] (z1) -- (yhat);
+                
+                \draw [decorate,xshift=-4pt,yshift=0pt] (-1.25,0) -- (-1.25,0) node [black,midway,yshift=+0.25cm]{\colorbox{yellow!20}{$w_1$}};
+                \draw [decorate,xshift=-4pt,yshift=0pt] (1.25,0) -- (1.25,0) node [black,midway,yshift=+0.25cm]{$w_2$};
+                
+                \draw[->] (yhat) -- (4.5,0)[xshift=15]node{$\mathbf{J(W)}$};
+            \end{tikzpicture}
+            \vspace{10pt}
+            
+            $$\dfrac{\partial \mathbf{J(W)}}{\partial \colorbox{yellow!20}{$w_1$} } = \dfrac{\partial \mathbf{J(W)}}{\partial \hat{y}} \cdot \dfrac{\partial \hat{y}}{\partial z_1 } \cdot \dfrac{\partial z_1}{\partial \colorbox{yellow!20}{$w_1$}}$$
+        \end{center}
+    \end{frame}
+    
+    % ----------- Aprendizaje 09 ----------------
+    \begin{frame}{Retropropagación}{Intro al aprendizaje profundo}
+        \begin{center}
+            \begin{tikzpicture}[shorten >=1pt]
+                \tikzstyle{unit1}=[draw,shape=circle,minimum size=0.8cm,fill=blue!20]
+                \tikzstyle{unit2}=[draw,shape=circle,minimum size=0.8cm,fill=green!20]
+                \tikzstyle{unit3}=[draw,shape=circle,minimum size=0.8cm,fill=purple!20]                
+                
+                \node[unit1](x) at (-2.5,0){$x$};
+                \node[unit2](z1) at (0,0){$z_1$};
+                \node[unit3](yhat) at (2.5,0){$\hat{y}$};
+                
+                
+                \draw[->] (x) -- (z1);
+                \draw[->] (z1) -- (yhat);
+                
+                \draw [decorate,xshift=-4pt,yshift=0pt] (-1.25,0) -- (-1.25,0) node [black,midway,yshift=+0.25cm]{$w_1$};
+                \draw [decorate,xshift=-4pt,yshift=0pt] (1.25,0) -- (1.25,0) node [black,midway,yshift=+0.25cm]{$w_2$};
+                
+                \draw[->] (yhat) -- (4.5,0)[xshift=15]node{$\mathbf{J(W)}$};
+            \end{tikzpicture}
+            \vspace{15pt}
+            
+            ¿Cómo se calculan los gradientes?\\
+            Con la regla de la cadena.\\
+            
+            Esto se repite para \textbf{cada peso} en la red neuronal, usando los gradientes de las capas posteriores.
+        \end{center}
+    \end{frame}
+    
+    % --------- Learning rate -------------------
+    \begin{frame}{Learning rate}{Intro al aprendizaje profundo}
+        \begin{center}
+            La actualización de pesos está dada por:
+            $$\mathbf{W} \leftarrow \mathbf{W} - \colorbox{yellow!20}{$\eta$} \dfrac{\partial \mathbf{J(W)}}{\partial \mathbf{W}}$$
+            \begin{figure}
+                \centering
+                \includegraphics[width=0.8\textwidth]{lr}
+            \end{figure}
+        \end{center}
+    \end{frame}
+    
+    % ----------- Aprendizaje 10 ----------------
+    \begin{frame}{Descenso de gradiente}{Intro al aprendizaje profundo}
+        \begin{block}{Algoritmo: Descenso de gradiente}
+            \begin{enumerate}
+                \item Inicializar los pesos aleatoriamente $\sim \mathcal{N}(0,\sigma^2)$
+                \item Repetir hasta converger:
+                \item \hspace*{8pt} Calcular el gradiente \colorbox{yellow!20}{$\dfrac{\partial \mathbf{J(W)}}{\partial \mathbf{W}}^*$}
+                \item \hspace*{8pt} Actualizar los pesos $\mathbf{W} \leftarrow \mathbf{W} - \eta \dfrac{\partial \mathbf{J(W)}}{\partial \mathbf{W}}$
+                \item Devolver pesos \textit{óptimos}
+            \end{enumerate}
+        \end{block}
+        \begin{itemize}
+            \item $^*$Esto es muy pesado de calcular (computacionalmente).
+        \end{itemize}
+    \end{frame}
+    
+    % ----------- Aprendizaje 11 ----------------
+    \begin{frame}{Descenso de gradiente estocástico}{Intro al aprendizaje profundo}
+        \begin{block}{Algoritmo: Descenso de gradiente estocástico}
+            \begin{enumerate}
+                \item Inicializar los pesos aleatoriamente $\sim \mathcal{N}(0,\sigma^2)$
+                \item Repetir hasta converger:
+                \item \hspace*{8pt} Seleccionar observación $i$
+                \item \hspace*{8pt} Calcular el gradiente \colorbox{yellow!20}{$\dfrac{\partial \mathbf{J_i(W)}}{\partial \mathbf{W}}^*$}
+                \item \hspace*{8pt} Actualizar los pesos $\mathbf{W} \leftarrow \mathbf{W} - \eta \dfrac{\partial \mathbf{J(W)}}{\partial \mathbf{W}}$
+                \item Devolver pesos \textit{óptimos}
+            \end{enumerate}
+        \end{block}
+        \begin{itemize}
+            \item $^*$Esto es muy sencillo de calcular (computacionalmente), pero es estocástico.
+        \end{itemize}
+    \end{frame}
+    
+    % ----------- Aprendizaje 12 ----------------
+    \begin{frame}{Descenso de gradiente estocástico}{Intro al aprendizaje profundo}
+        \begin{block}{Algoritmo: Descenso de gradiente estocástico - \textit{Mini batches}}
+            \begin{enumerate}
+                \item Inicializar los pesos aleatoriamente $\sim \mathcal{N}(0,\sigma^2)$
+                \item Repetir hasta converger:
+                \item \hspace*{8pt} Seleccionar un batch $B$ de observaciones
+                \item \hspace*{8pt} Calcular el gradiente \colorbox{yellow!20}{$\dfrac{\partial \mathbf{J(W)}}{\partial \mathbf{W}} = \frac{1}{B} \sum_{k=1}^B \dfrac{\partial \mathbf{J_k(W)}}{\partial \mathbf{W}}^*$}
+                \item \hspace*{8pt} Actualizar los pesos $\mathbf{W} \leftarrow \mathbf{W} - \eta \dfrac{\partial \mathbf{J(W)}}{\partial \mathbf{W}}$
+                \item Devolver pesos \textit{óptimos}
+            \end{enumerate}
+        \end{block}
+        \begin{itemize}
+            \item $^*$Esto es rápido de calcular (computacionalmente), y da una mejor estimación del gradiente.
+        \end{itemize}
+    \end{frame}
+    
+    % ----------- Regularización ----------------
+    %\subsection{Regularización}
+    
+    %\begin{frame}{Regularización}{Intro al aprendizaje profundo}
+    %    \begin{block}{Block title}
+    %        Cras viverra metus rhoncus sem.
+    %    \end{block}
+    %\end{frame}
+    
+    % ----------- Observaciones 02 ----------------
+    \begin{frame}{Observaciones}{Intro al aprendizaje profundo}
+        \begin{itemize}
+            \item Los \textbf{frameworks} para aprendizaje profundo (como TensorFlow, PyTorch, etc.) ya hacen la diferenciación y optimización por nosotros, es decir, ya calculan el gradiente y actualizan los pesos.
+            \item Nosotros exploraremos el uso de \textbf{TensorFlow} a través de su API de alto nivel, \textbf{Keras}, para las redes neuronales que estaremos construyendo.
+            \item Comenzaremos retomando algunos de los problemas planteados en la sesión anterior.
+        \end{itemize}
+    \end{frame}
+    
+    % ----------- TensorFlow --------------------
+    \begin{frame}{TensorFlow}{Intro al aprendizaje profundo}
+        \begin{center}
+            \begin{figure}
+                \centering
+                \includegraphics[width=0.5\textwidth]{tf}
+            \end{figure}
+            \colorbox{blue!10}{\href{https://www.tensorflow.org/}{TensorFlow}} es un framework open-source para Machine Learning desarrollado por Google. Utilizado para construir y entrenar redes neuronales artificiales.
+        \end{center}
+    \end{frame}
+    
+    % ----------- Ejercicio 02 ------------------
+    \begin{frame}{Ejercicio}{Intro al aprendizaje profundo}
+        \begin{center}
+            {\Large \textbf{Ejercicio: Exploración del TensorFlow Playground}}
+        \end{center}
+        \begin{figure}
+            \centering
+            \includegraphics[width=0.65\textwidth]{tf-playground}
+        \end{figure}
+    \end{frame}
+    
+    % ----------- Ejercicio 03 ------------------
+    \begin{frame}{Ejercicio}{Intro al aprendizaje profundo}
+        \begin{center}
+            {\Large \textbf{Ejercicio: Problema de separabilidad lineal}}
+        \end{center}
+        \begin{figure}
+            \centering
+            \includegraphics[width=0.7\textwidth]{xor}
+        \end{figure}
+    \end{frame}
+    
+    % ----------- Ejercicio 04 ------------------
+    \begin{frame}{Ejercicio}{Intro al aprendizaje profundo}
+        \begin{center}
+            {\Large \textbf{Ejercicio: Exploración con TensorFlow}}
+        \end{center}
+        \begin{figure}
+            \centering
+            \includegraphics[width=0.6\textwidth]{tf}
+        \end{figure}
+    \end{frame}
+    
+    % Mover/eliminar conforme se agregan los contenidos
+    \subsection{Regularización}
+    \section{Visión computacional profunda}
+    \section{Modelado profundo de secuencias}
+    \section{Modelado generativo profundo}
+    \section{Panorama actual y futuro}
+    
+    % ----------- Lecturas recomendadas 02 ------
+    \begin{frame}{Lecturas recomendadas}{Intro al aprendizaje profundo}
+        \begin{itemize}
+            \item Setting the   \colorbox{blue!10}{\href{https://www.jeremyjordan.me/nn-learning-rate/}{learning rate}} of your neural network
+            \item \colorbox{blue!10}{\href{https://hmkcode.com/ai/backpropagation-step-by-step/}{Retropropagación}} paso a paso
+            \item \colorbox{blue!10}{\href{https://www.tensorflow.org/tutorials}{TensorFlow Tutorials}}
+            \item Libro \colorbox{blue!10}{\href{http://neuralnetworksanddeeplearning.com/}{Neural Networks and Deep Learning}}
         \end{itemize}
     \end{frame}
 
