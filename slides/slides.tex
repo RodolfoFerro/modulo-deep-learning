@@ -4,6 +4,7 @@
 \usepackage[T1]{fontenc}
 
 \usepackage{tikz}
+\usetikzlibrary{positioning}
 \usetikzlibrary{decorations.pathreplacing}
 \usepackage{etoolbox}
 \usepackage{listofitems} % for \readlist to create arrays
@@ -913,9 +914,9 @@ amurmapleblack
                 }
                 
                 % LABELS
-                \node[above=3,align=center,mydarkgreen] at (N1-1.90) {Capa de \\[-0.2em]entrada};
-                \node[above=2,align=center,mydarkblue] at (N2-1.90) {Capas\\[-0.2em]ocultas};
-                \node[above=3,align=center,mydarkred] at (N\Nnodlen-1.90) {Capa de\\[-0.2em]salida};
+                \node[above=0.25,align=center,mydarkgreen] at (N1-1.90) {Capa de \\[-0.2em]entrada};
+                \node[above=0.25,align=center,mydarkblue] at (N2-1.90) {Capas\\[-0.2em]ocultas};
+                \node[above=0.25,align=center,mydarkred] at (N\Nnodlen-1.90) {Capa de\\[-0.2em]salida};
                 
             \end{tikzpicture}
         \end{center}
@@ -966,9 +967,9 @@ amurmapleblack
                 }
                 
                 % LABELS
-                \node[above=3,align=center,mydarkgreen] at (N1-1.90) {Capa de \\[-0.2em]entrada};
-                \node[above=2,align=center,mydarkblue] at (N2-1.90) {Capas\\[-0.2em]ocultas};
-                \node[above=3,align=center,mydarkred] at (N\Nnodlen-1.90) {Capa de\\[-0.2em]salida};
+                \node[above=0.25,align=center,mydarkgreen] at (N1-1.90) {Capa de \\[-0.2em]entrada};
+                \node[above=0.25,align=center,mydarkblue] at (N2-1.90) {Capas\\[-0.2em]ocultas};
+                \node[above=0.25,align=center,mydarkred] at (N\Nnodlen-1.90) {Capa de\\[-0.2em]salida};
             \end{tikzpicture}
             \vspace{10pt}\\
             Para $\mathbf{x}^{(i)}=(x^{(i)}_1, x^{(i)}_2, \dots, x^{(i)}_n)$, $y^{(i)}$, tendríamos que la salida es $\hat{y}^{(i)}_1 = f(x^{(i)})$. 
@@ -1231,15 +1232,6 @@ amurmapleblack
         \end{itemize}
     \end{frame}
     
-    % ----------- Regularización ----------------
-    %\subsection{Regularización}
-    
-    %\begin{frame}{Regularización}{Intro al aprendizaje profundo}
-    %    \begin{block}{Block title}
-    %        Cras viverra metus rhoncus sem.
-    %    \end{block}
-    %\end{frame}
-    
     % ----------- Observaciones 02 ----------------
     \begin{frame}{Observaciones}{Intro al aprendizaje profundo}
         \begin{itemize}
@@ -1293,13 +1285,6 @@ amurmapleblack
         \end{figure}
     \end{frame}
     
-    % Mover/eliminar conforme se agregan los contenidos
-    \subsection{Regularización}
-    \section{Visión computacional profunda}
-    \section{Modelado profundo de secuencias}
-    \section{Modelado generativo profundo}
-    \section{Panorama actual y futuro}
-    
     % ----------- Lecturas recomendadas 02 ------
     \begin{frame}{Lecturas recomendadas}{Intro al aprendizaje profundo}
         \begin{itemize}
@@ -1307,6 +1292,144 @@ amurmapleblack
             \item \colorbox{blue!10}{\href{https://hmkcode.com/ai/backpropagation-step-by-step/}{Retropropagación}} paso a paso
             \item \colorbox{blue!10}{\href{https://www.tensorflow.org/tutorials}{TensorFlow Tutorials}}
             \item Libro \colorbox{blue!10}{\href{http://neuralnetworksanddeeplearning.com/}{Neural Networks and Deep Learning}}
+        \end{itemize}
+    \end{frame}
+    
+    % ----------- Regularización 01 --------------
+    \subsection{Regularización}
+    
+    \begin{frame}{El problema del overfitting}{Intro al aprendizaje profundo}
+        \begin{figure}
+            \centering
+            \includegraphics[width=0.85\textwidth]{overfitting}
+        \end{figure}
+    \end{frame}
+    
+    % ----------- Regularización 02 --------------
+    \begin{frame}{Regularización}{Intro al aprendizaje profundo}
+        \begin{itemize}
+            \item La \textbf{regularización} consiste en alguna técnica que sirve para evitar que un modelo se sobreajuste.
+            \item Es necesaria porque ayuda a mejorar la generalización de nuestro modelo con datos no vistos.
+            \item Los métodos de regularización que exploraremos serán:
+            \begin{itemize}
+                \item \textit{Dropout}
+                \item \textit{Early stopping}
+            \end{itemize}
+        \end{itemize}
+    \end{frame}
+    
+    % ----------- Dropout 01 ---------------------
+    \begin{frame}{Dropout}{Intro al aprendizaje profundo}
+        \def\layersep{1}
+        \def\nodesep{0.75}
+        
+        \begin{tikzpicture}[
+            node/.style={circle, draw, thick},
+            ]
+            
+            \foreach \y in {1,...,5}{
+                \node[node] (i\y) at (0,\nodesep*\y) {};
+                \node[node, right=\layersep of i\y] (h1\y) {};
+                \node[node, right=\layersep of h1\y] (h2\y) {};
+            }
+            
+            \node[node, right=\layersep of h22] (o1) {};
+            \node[node, right=\layersep of h24] (o2) {};
+            
+            \foreach \source in {1,...,5}
+            \foreach \dest in {1,...,5}{
+                \path[-stealth, thick] (i\source) edge (h1\dest);
+                \path[-stealth, thick] (h1\source) edge (h2\dest);
+            }
+            \foreach \source in {1,...,5}
+            \foreach \dest in {1,2}
+            \draw[-stealth, thick] (h2\source) -- (o\dest);
+            
+            \draw[-stealth, thick] (4.2,3*\nodesep) -- node[above,font=\bfseries]{dropout} (6, 3*\nodesep);
+            
+            % Boundary
+            
+            \foreach \y in {1,...,5}
+            \node[node, right=10em of h2\y] (di\y) {};
+            
+            \node[red,font=\huge] at (di1) {$\times$};
+            \node[red,font=\huge] at (di3) {$\times$};
+            
+            \foreach \y in {1,...,5}
+            \node[node, right=\layersep of di\y] (dh1\y) {};
+            
+            \node[red,font=\huge] at (dh11) {$\times$};
+            \node[red,font=\huge] at (dh13) {$\times$};
+            \node[red,font=\huge] at (dh14) {$\times$};
+            
+            \foreach \y in {1,...,5}
+            \node[node, right=\layersep of dh1\y] (dh2\y) {};
+            
+            \node[red,font=\huge] at (dh22) {$\times$};
+            \node[red,font=\huge] at (dh24) {$\times$};
+            
+            \node[node, right=\layersep of dh22] (do1) {};
+            \node[node, right=\layersep of dh24] (do2) {};
+            
+            \foreach \source in {2,4,5}
+            \foreach \dest in {2,5}
+            \draw[-stealth, thick] (di\source) -- (dh1\dest);
+            
+            \foreach \source in {2,5}
+            \foreach \dest in {1,3,5}
+            \draw[-stealth, thick] (dh1\source) -- (dh2\dest);
+            
+            \foreach \source in {1,3,5}
+            \foreach \dest in {1,2}
+            \draw[-stealth, thick] (dh2\source) -- (do\dest);
+            
+        \end{tikzpicture}
+    \end{frame}
+    
+    % ----------- Dropout 02 ---------------------
+    \begin{frame}{Dropout}{Intro al aprendizaje profundo}
+        \begin{itemize}
+            \item Durante el entrenamiento, establecemos aleatoriamente algunas activaciones en 0
+            \begin{itemize}
+                \item Típicamente hacemos "drop" del 50\% de activaciones en una capa.
+                \item Esto forza a la red a no depender de ningún nodo/neurona.
+            \end{itemize}
+            \item Podemos realizar el dropout en TensorFlow utilizando la capa \texttt{tf.keras.layers.Dropout(0.5)}, donde el 0.5 puede variar de acuerdo a lo especificado.
+        \end{itemize}
+    \end{frame}
+    
+    % ----------- Early stopping 01 --------------
+    \begin{frame}{Early stopping}{Intro al aprendizaje profundo}
+        \begin{figure}
+            \centering
+            \includegraphics[width=0.45\textwidth]{early-stop-01}
+            \includegraphics[width=0.45\textwidth]{early-stop-02}
+        \end{figure}
+    \end{frame}
+    
+    % ----------- Early stopping 01 --------------
+    \begin{frame}{Early stopping}{Intro al aprendizaje profundo}
+        \begin{itemize}
+            \item El \textit{Early Stopping} puede ser realizado en TensorFlow de manera sencilla creando un callback (función que se llama en cada iteración durante el entrenamiento de la red neuronal):\\
+        \end{itemize}
+        
+        \texttt{\\model = tf.keras.models.Sequential(...)}\\
+        \texttt{callback = tf.keras.callbacks.EarlyStopping(monitor='loss', patience=3)}\\
+        \texttt{history = model.fit(..., callbacks=[callback])}
+    \end{frame}
+    
+    % Mover/eliminar conforme se agregan los contenidos
+    \subsection{Regularización}
+    \section{Visión computacional profunda}
+    \section{Modelado profundo de secuencias}
+    \section{Modelado generativo profundo}
+    \section{Panorama actual y futuro}
+    
+    % ----------- Lecturas recomendadas 03 ------
+    \begin{frame}{Lecturas recomendadas}{Intro al aprendizaje profundo}
+        \begin{itemize}
+            \item Artículo \colorbox{blue!10}{\href{https://jmlr.org/papers/v15/srivastava14a.html}{"Dropout: A Simple Way to Prevent Neural Networks from Overfitting"}}
+            \item \colorbox{blue!10}{\href{https://www.pinecone.io/learn/regularization-in-neural-networks/}{Regularización en Redes Neuronales}}
         \end{itemize}
     \end{frame}
 
