@@ -4,7 +4,7 @@
 \usepackage[T1]{fontenc}
 
 \usepackage{tikz}
-\usetikzlibrary{positioning}
+\usetikzlibrary{matrix, positioning}
 \usetikzlibrary{decorations.pathreplacing}
 \usepackage{etoolbox}
 \usepackage{listofitems} % for \readlist to create arrays
@@ -96,9 +96,9 @@ amurmapleblack
     \frame{\tableofcontents}
 
 	
-    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%    
-    % ----------- Intro al DL -------------------
-    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%    
+    % ----------- Intro al DL --------------------
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 	\section{Intro al aprendizaje profundo}
     
     % ----------- Motivación 01 ------------------
@@ -1418,19 +1418,283 @@ amurmapleblack
         \texttt{history = model.fit(..., callbacks=[callback])}
     \end{frame}
     
-    % Mover/eliminar conforme se agregan los contenidos
-    \subsection{Regularización}
-    \section{Visión computacional profunda}
-    \section{Modelado profundo de secuencias}
-    \section{Modelado generativo profundo}
-    \section{Panorama actual y futuro}
-    
     % ----------- Lecturas recomendadas 03 ------
     \begin{frame}{Lecturas recomendadas}{Intro al aprendizaje profundo}
         \begin{itemize}
             \item \colorbox{blue!10}{\href{https://jmlr.org/papers/v15/srivastava14a.html}{Artículo}} "Dropout: A Simple Way to Prevent Neural Networks from Overfitting"
             \item \colorbox{blue!10}{\href{https://www.pinecone.io/learn/regularization-in-neural-networks/}{Regularización en Redes Neuronales}}
             \item \colorbox{blue!10}{\href{https://neptune.ai/blog/vanishing-and-exploding-gradients-debugging-monitoring-fixing}{Vanishing and Exploding Gradients in Neural Network Models:}} Debugging, Monitoring, and Fixing
+        \end{itemize}
+    \end{frame}
+    
+    
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%    
+    % ----------- Computer Vision ----------------
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    \section{Visión computacional profunda}
+    
+    % ----------- Intro a imágenes 01 ------------
+    \subsection{Introducción a imágenes}
+    \begin{frame}{¿Qué es una imagen?}{Visión computacional profunda}
+        \begin{figure}
+            \centering
+            \includegraphics[width=0.75\textwidth]{img-deer}
+        \end{figure}
+    \end{frame}
+    
+    % ----------- Intro a imágenes 02 ------------
+    \begin{frame}{¿Qué es una imagen?}{Visión computacional profunda}
+        \begin{figure}
+            \centering
+            \includegraphics[width=0.75\textwidth]{img-lincoln}
+            \let\thefootnote\relax\footnote{{\tiny “Tutorial 1: Image Filtering.” AI Stanford. \url{https://ai.stanford.edu/~syyeung/cvweb/tutorial1.html}}}
+        \end{figure}
+    \end{frame}
+    
+    % ----------- Intro a imágenes 03 ------------
+    \begin{frame}{¿Qué es una imagen?}{Visión computacional profunda}
+        \begin{figure}
+            \centering
+            \includegraphics[width=0.75\textwidth]{img-lena}
+            \let\thefootnote\relax\footnote{{\tiny “Tutorial 1: Image Filtering.” AI Stanford. \url{https://ai.stanford.edu/~syyeung/cvweb/tutorial1.html}}}
+        \end{figure}
+    \end{frame}
+    
+    % ----------- Intro a imágenes 04 ------------
+    \begin{frame}{¿Qué es una imagen?}{Visión computacional profunda}
+        \begin{itemize}
+            \item Una imagen es un arreglo de pixeles, la cual peude tener 1 o más canales de color. Usualmente:
+            \begin{itemize}
+                \item 1 canal de color $\rightarrow$ Escala de grises
+                \item 3 canales de color $\rightarrow$ Escala RGB
+                \item 4 canales de color $\rightarrow$ Escala RGBA
+            \end{itemize}
+            \item Un pixel puede ser visto como un objeto 5-dimensional $(x, y, r, g, b)$.
+        \end{itemize}
+    \end{frame}
+    
+    % ----------- Biología humana 01 -------------
+    \begin{frame}{La biología humana}{Visión computacional profunda}
+        \begin{figure}
+            \centering
+            \includegraphics[width=0.8\textwidth]{img-encroma-01}
+            \let\thefootnote\relax\footnote{{\tiny “How EnChroma Color Blind Glasses Work.” EnChroma. \url{http://enchroma.com/technology/}}}
+        \end{figure}
+    \end{frame}
+    
+    % ----------- Biología humana 02 -------------
+    \begin{frame}{La biología humana}{Visión computacional profunda}
+        \begin{figure}
+            \centering
+            \includegraphics[width=0.8\textwidth]{img-encroma-02}
+            \let\thefootnote\relax\footnote{{\tiny “How EnChroma Color Blind Glasses Work.” EnChroma. \url{http://enchroma.com/technology/}}}
+        \end{figure}
+    \end{frame}
+    
+    % ----------- Espacios de color --------------
+    \subsection{Espacios de color}
+    \begin{frame}{Espacios de color}{Visión computacional profunda}
+        \begin{figure}
+            \centering
+            \includegraphics[width=0.9\textwidth]{img-color-space}
+        \end{figure}
+    \end{frame}
+    
+    % ----------- Convoluciones 01 ---------------
+    \subsection{Convoluciones \& Pooling}
+    \begin{frame}{¿Qué es una convolución?}{Visión computacional profunda}
+        \begin{figure}
+            \centering
+            \includegraphics[width=0.9\textwidth]{1d-conv}
+        \end{figure}
+    \end{frame}
+    
+    % ----------- Ejercicio 05 ------------------
+    \begin{frame}{Ejercicio}{Intro al aprendizaje profundo}
+        \begin{center}
+            {\Large \textbf{Ejercicio: Introducción a imágenes}}
+        \end{center}
+        \begin{figure}
+            \centering
+            \includegraphics[width=0.6\textwidth]{img-lena}
+        \end{figure}
+    \end{frame}
+    
+    % ----------- Convoluciones 02 ---------------
+    \begin{frame}{¿Qué es una convolución?}{Visión computacional profunda}
+        \begin{center}
+            \begin{tikzpicture}[
+                2d-arr/.style={matrix of nodes, row sep=-\pgflinewidth, column sep=-\pgflinewidth, nodes={draw}}, ampersand replacement=\&
+              ]
+                
+                \matrix (mtr) [2d-arr] {
+                    0 \& 1 \& 1 \& |[fill=orange!30]| 1 \& |[fill=orange!30]| 0 \& |[fill=orange!30]| 0 \& 0\\
+                    0 \& 0 \& 1 \& |[fill=orange!30]| 1 \& |[fill=orange!30]| 1 \& |[fill=orange!30]| 0 \& 0\\
+                    0 \& 0 \& 0 \& |[fill=orange!30]| 1 \& |[fill=orange!30]| 1 \& |[fill=orange!30]| 1 \& 0\\
+                    0 \& 0 \& 0 \& 1 \& 1 \& 0 \& 0\\
+                    0 \& 0 \& 1 \& 1 \& 0 \& 0 \& 0\\
+                    0 \& 1 \& 1 \& 0 \& 0 \& 0 \& 0\\
+                    1 \& 1 \& 0 \& 0 \& 0 \& 0 \& 0\\
+                };
+                
+                \node[below=of mtr-5-4] {$\mathbf I$};
+                
+                \node[right=0.2em of mtr] (str) {$*$};
+                
+                \matrix (K) [2d-arr, right=0.2em of str, nodes={draw, fill=teal!30}] {
+                    1 \& 0 \& 1 \\
+                    0 \& 1 \& 0 \\
+                    1 \& 0 \& 1 \\
+                };
+                \node[below=of K-3-2] {$\mathbf K$};
+                
+                \node[right=0.2em of K] (eq) {$=$};
+                
+                \matrix (ret) [2d-arr, right=0.2em of eq] {
+                    1 \& 4 \& 3 \& |[fill=blue!80!black!30]| 4 \& 1\\
+                    1 \& 2 \& 4 \& 3 \& 3\\
+                    1 \& 2 \& 3 \& 4 \& 1\\
+                    1 \& 3 \& 3 \& 1 \& 1\\
+                    3 \& 3 \& 1 \& 1 \& 0\\
+                };
+                \node[below=of ret-4-3] {$\mathbf{I * K}$};
+                
+                \draw[dashed, teal] (mtr-1-6.north east) -- (K-1-1.north west);
+                \draw[dashed, teal] (mtr-3-6.south east) -- (K-3-1.south west);
+                
+                \draw[dashed, blue!80!black] (K-1-3.north east) -- (ret-1-4.north west);
+                \draw[dashed, blue!80!black] (K-3-3.south east) -- (ret-1-4.south west);
+                
+                \foreach \i in {1,2,3} {
+                    \foreach \j in {4,5,6} {
+                        \node[font=\tiny, scale=0.6, shift={(-1.2ex,-2ex)}] at (mtr-\i-\j) {$\times \pgfmathparse{int(mod(\i+\j,2))}\pgfmathresult$};
+                    }
+                }
+                
+            \end{tikzpicture}
+        \end{center}
+    \end{frame}
+    
+    % ----------- Convoluciones 03 ---------------
+    \begin{frame}{¿Qué es una convolución?}{Visión computacional profunda}
+        \begin{figure}
+            \centering
+            \includegraphics[width=0.9\textwidth]{filter}
+        \end{figure}
+        \let\thefootnote\relax\footnote{{\tiny “Image Kernels.” Victor Powell. \url{https://setosa.io/ev/image-kernels/}}}
+    \end{frame}
+    
+    % ----------- Pooling 01 ---------------------
+    \begin{frame}{Pooling}{Visión computacional profunda}
+        \begin{figure}
+            \centering
+            \includegraphics[width=0.9\textwidth]{pooling}
+        \end{figure}
+    \end{frame}
+    
+    % ----------- Ejercicio 06 ------------------
+    \begin{frame}{Ejercicio}{Intro al aprendizaje profundo}
+        \begin{center}
+            {\Large \textbf{Ejercicio: Convoluciones \& Pooling}}
+        \end{center}
+        \begin{figure}
+            \centering
+            \includegraphics[width=0.6\textwidth]{filter}
+        \end{figure}
+    \end{frame}
+    
+    % ----------- CNNs 01 ------------------------
+    \subsection{Redes neuronales convolucionales}
+    \begin{frame}{Redes neuronales convolucionales}{Visión computacional profunda}
+        \begin{figure}
+            \centering
+            \includegraphics[width=0.9\textwidth]{lecun}
+            \caption{Yann LeCun}
+        \end{figure}
+    \end{frame}
+    
+    % ----------- CNNs 02 ------------------------
+    \begin{frame}{Redes neuronales convolucionales}{Visión computacional profunda}
+        \begin{figure}
+            \centering
+            \includegraphics[width=0.9\textwidth]{cnns-01}
+        \end{figure}
+    \end{frame}
+    
+    % ----------- CNNs 03 ------------------------
+    \begin{frame}{Redes neuronales convolucionales}{Visión computacional profunda}
+        \begin{figure}
+            \centering
+            \includegraphics[width=0.9\textwidth]{cnns-02}
+        \end{figure}
+    \end{frame}
+    
+    % ----------- CNNs 04 ------------------------
+    \begin{frame}{Redes neuronales convolucionales}{Visión computacional profunda}
+        \begin{figure}
+            \centering
+            \includegraphics[width=0.9\textwidth]{cnns-03}
+        \end{figure}
+    \end{frame}
+    
+    % ----------- CNNs 05 ------------------------
+    \subsection{Clasificadores de imágenes (LeNet, VGG16, etc.)}
+    \begin{frame}{LeNet-5}{Visión computacional profunda}
+        \begin{figure}
+            \centering
+            \includegraphics[width=0.9\textwidth]{classifiers-01}
+        \end{figure}
+    \end{frame}
+    
+    % ----------- CNNs 06 ------------------------
+    \begin{frame}{VGG16}{Visión computacional profunda}
+        \begin{figure}
+            \centering
+            \includegraphics[width=0.9\textwidth]{classifiers-02}
+        \end{figure}
+    \end{frame}
+    
+    % ----------- CNNs 07 ------------------------
+    \begin{frame}{Resnet50}{Visión computacional profunda}
+        \begin{figure}
+            \centering
+            \includegraphics[width=0.9\textwidth]{classifiers-03}
+        \end{figure}
+    \end{frame}
+    
+    % ----------- CNNs 08 ------------------------
+    \begin{frame}{GoogLeNet}{Visión computacional profunda}
+        \begin{figure}
+            \centering
+            \includegraphics[width=0.9\textwidth]{classifiers-04}
+        \end{figure}
+    \end{frame}
+    
+    % ----------- Ejercicio 07 ------------------
+    \begin{frame}{Ejercicio}{Intro al aprendizaje profundo}
+        \begin{center}
+            {\Large \textbf{Ejercicio: Redes neuronales convolucionales}}
+        \end{center}
+        \begin{figure}
+            \centering
+            \includegraphics[width=0.6\textwidth]{classifiers-01}
+        \end{figure}
+    \end{frame}
+    
+    
+    % Mover/eliminar conforme se agregan los contenidos
+    \section{Modelado profundo de secuencias}
+    \section{Modelado generativo profundo}
+    \section{Panorama actual y futuro}
+    
+    % ----------- Lecturas recomendadas 04 ------
+    \begin{frame}{Lecturas recomendadas}{Visión computacional}
+        \begin{itemize}
+            \item Tutorial 1: \colorbox{blue!10}{\href{https://ai.stanford.edu/~syyeung/cvweb/tutorial1.html}{Image Filtering}}
+            \item \colorbox{blue!10}{\href{https://setosa.io/ev/image-kernels/}{Image Kernels Explained Visually}} by Victor Powell
+            \item \colorbox{blue!10}{\href{https://gudgud96.github.io/2020/11/25/param-pooling/}{Parameterized Pooling Layers}} by Hao Hao Tan
+            \item TensorFlow Tutorials: \colorbox{blue!10}{\href{https://www.tensorflow.org/tutorials/images}{Vision}}
+            
         \end{itemize}
     \end{frame}
 
