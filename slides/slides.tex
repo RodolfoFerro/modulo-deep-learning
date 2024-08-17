@@ -3,6 +3,8 @@
 \usepackage{pgfpages}
 \usepackage[T1]{fontenc}
 
+\usepackage{pdfpages}
+
 \usepackage{tikz}
 \usetikzlibrary{matrix, positioning}
 \usetikzlibrary{decorations.pathreplacing}
@@ -1463,7 +1465,7 @@ amurmapleblack
     % ----------- Intro a imágenes 04 ------------
     \begin{frame}{¿Qué es una imagen?}{Visión computacional profunda}
         \begin{itemize}
-            \item Una imagen es un arreglo de pixeles, la cual peude tener 1 o más canales de color. Usualmente:
+            \item Una imagen es un arreglo de pixeles, la cual puede tener 1 o más canales de color. Usualmente:
             \begin{itemize}
                 \item 1 canal de color $\rightarrow$ Escala de grises
                 \item 3 canales de color $\rightarrow$ Escala RGB
@@ -1500,15 +1502,6 @@ amurmapleblack
         \end{figure}
     \end{frame}
     
-    % ----------- Convoluciones 01 ---------------
-    \subsection{Convoluciones \& Pooling}
-    \begin{frame}{¿Qué es una convolución?}{Visión computacional profunda}
-        \begin{figure}
-            \centering
-            \includegraphics[width=0.9\textwidth]{1d-conv}
-        \end{figure}
-    \end{frame}
-    
     % ----------- Ejercicio 05 ------------------
     \begin{frame}{Ejercicio}{Intro al aprendizaje profundo}
         \begin{center}
@@ -1517,6 +1510,15 @@ amurmapleblack
         \begin{figure}
             \centering
             \includegraphics[width=0.6\textwidth]{img-lena}
+        \end{figure}
+    \end{frame}
+    
+    % ----------- Convoluciones 01 ---------------
+    \subsection{Convoluciones \& Pooling}
+    \begin{frame}{¿Qué es una convolución?}{Visión computacional profunda}
+        \begin{figure}
+            \centering
+            \includegraphics[width=0.9\textwidth]{1d-conv}
         \end{figure}
     \end{frame}
     
@@ -1681,12 +1683,6 @@ amurmapleblack
         \end{figure}
     \end{frame}
     
-    
-    % Mover/eliminar conforme se agregan los contenidos
-    \section{Modelado profundo de secuencias}
-    \section{Modelado generativo profundo}
-    \section{Panorama actual y futuro}
-    
     % ----------- Lecturas recomendadas 04 ------
     \begin{frame}{Lecturas recomendadas}{Visión computacional}
         \begin{itemize}
@@ -1697,7 +1693,307 @@ amurmapleblack
             
         \end{itemize}
     \end{frame}
+    
+    % ----------- Autoencoders 01 ---------------
+    \subsection{Autoencoders}
+    \begin{frame}{Reconstrucción de imágenes}{Visión computacional profunda}
+        \begin{itemize}
+            \item Proceso de generar una imagen de salida a partir de una de entrada, generalmente con el objetivo de restaurar o mejorar la calidad de la imagen original.
+            \item En el contexto de los autoencoders y la tarea de denoising, la reconstrucción implica generar una versión limpia y libre de ruido de una imagen ruidosa o de baja calidad.
+        \end{itemize}
+    \end{frame}
+    
+    % ----------- Autoencoders 02 ---------------
+    \begin{frame}{Reconstrucción de imágenes}{Visión computacional profunda}
+        \begin{enumerate}
+            \item Restauración de la calidad visual.
+            \item Preservación de la información relevante.
+            \item Mejora de aplicaciones y análisis (eliminación de ruido).
+            \item Preservación de características y texturas.
+            \item Calidad y experiencia visual.
+        \end{enumerate}
+    \end{frame}
+    
+    % ----------- Autoencoders 03 ---------------
+    \begin{frame}{Aplicaciones}{Visión computacional profunda}
+        \begin{figure}
+            \centering
+            \includegraphics[width=0.75\textwidth]{xray-denoise}
+            \let\thefootnote\relax\footnote{{\tiny “Autoencoder For Denoising Images.” Michel Kana. \url{https://towardsdatascience.com/autoencoder-for-denoising-images-7d63a0831bfd}}}
+        \end{figure}
+    \end{frame}
+    
+    % ----------- Autoencoders 04 ---------------
+    \begin{frame}{Autoencoders}{Visión computacional profunda}
+        ANNs utilizadas para aprender representaciones eficientes de los datos de entrada sin necesidad de etiquetas o supervisión externa.
+        \begin{figure}
+            \centering
+            \includegraphics[width=0.65\textwidth]{autoencoder-keras}
+            \let\thefootnote\relax\footnote{{\tiny “Building Autoencoders in Keras.” Keras Blog. \url{https://blog.keras.io/building-autoencoders-in-keras.html}}}
+        \end{figure}
+    \end{frame}
+    
+    % ----------- Autoencoders 05 ---------------
+    \begin{frame}{Estructura de un autoencoder}{Visión computacional profunda}
+        \begin{figure}
+            \centering
+            \includegraphics[width=\textwidth]{autoencoder-architecture}
+            \let\thefootnote\relax\footnote{{\tiny “From Autoencoder to Beta-VAE.” Lilian Weng. \url{https://lilianweng.github.io/posts/2018-08-12-vae/}}}
+        \end{figure}
+    \end{frame}
+    
+    % ----------- Autoencoders 06 ---------------
+    \begin{frame}{Funcionamiento de autoencoders}{Visión computacional profunda}
+        \begin{itemize}
+            \item \textit{\textbf{Encoder:}} Toma los datos de entrada y los transforma en una representación de menor dimensionalidad, también conocida como representación latente. 
+            \item \textbf{El objetivo del codificador es...} \\
+            Comprimir la información esencial de los datos en esta representación latente. 
+            \item \underline{Usualmente}, el codificador está compuesto por capas de neuronas que reducen gradualmente la dimensionalidad de los datos a medida que se propagan a través de la red. Este proceso de reducción dimensional es crucial para extraer las características más importantes de los datos y deshacerse de la información redundante o ruidosa.
+        \end{itemize}
+    \end{frame}
+    
+    % ----------- Autoencoders 07 ---------------
+    \begin{frame}{Funcionamiento de autoencoders}{Visión computacional profunda}
+        \begin{itemize}
+            \item \textit{\textbf{Decoder:}} Toma la representación latente generada y la reconstruye en una salida que se asemeja lo más posible a la entrada original. 
+            \item \textbf{El objetivo del decodificador es...}\\ 
+            Descomprimir la representación latente y generar una reconstrucción fiel de los datos de entrada.
+            \item \underline{Al igual que el encoder}, el decodificador está compuesto por capas de neuronas, pero en este caso, las capas aumentan gradualmente la dimensionalidad de la representación latente hasta que se obtiene una salida de la misma dimensión que los datos de entrada originales.
+        \end{itemize}
+    \end{frame}
+    
+    % ----------- Autoencoders 08 ---------------
+    \begin{frame}{Funcionamiento de autoencoders}{Visión computacional profunda}
+        \begin{itemize}
+            \item La idea central es que, al restringir la capacidad de reconstrucción de la red, se obliga al codificador a aprender representaciones más compactas y significativas de los datos. 
+            
+            \item En otras palabras, se busca que el codificador capture las características más importantes y relevantes de los datos en la representación latente, mientras que el decodificador se encarga de reconstruir los datos de entrada a partir de esa representación latente.
+        \end{itemize}
+    \end{frame}
+    
+    % ----------- Autoencoders 09 ---------------
+    \begin{frame}{Estructura de un autoencoder}{Visión computacional profunda}
+        \begin{figure}
+            \centering
+            \includegraphics[width=\textwidth]{autoencoder-architecture}
+            \let\thefootnote\relax\footnote{{\tiny “From Autoencoder to Beta-VAE.” Lilian Weng. \url{https://lilianweng.github.io/posts/2018-08-12-vae/}}}
+        \end{figure}
+    \end{frame}
+    
+    % ----------- Autoencoders 10 ---------------
+    \begin{frame}{Aplicaciones de los autoencoders}{Visión computacional profunda}
+        \begin{figure}
+            \centering
+            \includegraphics[width=0.4\textwidth]{autoencoder-mini}
+        \end{figure}
+        \begin{itemize}
+            \item \textbf{Denoising de imágenes:} Se utilizan para eliminar el ruido de las imágenes y reconstruir versiones más limpias.
+            \item \textbf{Reducción de dimensionalidad:} Los autoencoders se utilizan para reducir la dimensionalidad de los datos, lo que facilita la visualización y comprensión de datos complejos. Esto es útil en análisis exploratorio de datos, visualización de datos de gran dimensión y clustering.
+        \end{itemize}
+    \end{frame}
+    
+    % ----------- Autoencoders 11 ---------------
+    \begin{frame}{Aplicaciones de los autoencoders}{Visión computacional profunda}
+        \begin{figure}
+            \centering
+            \includegraphics[width=0.4\textwidth]{autoencoder-mini}
+        \end{figure}
+        \begin{itemize}
+            \item \textbf{Generación de contenido:} Pueden generar contenido nuevo y original aprendiendo las características latentes de un conjunto de datos. Esto se utiliza en aplicaciones como la generación de imágenes sintéticas, la creación de música o la generación de texto.
+            \item \textbf{Detección de anomalías:} Se utilizan para detectar patrones anormales o inusuales en los datos. Esto se aplica en áreas como la detección de fraudes en transacciones financieras, la detección de intrusiones en sistemas de seguridad o la detección de anomalías en imágenes médicas.
+        \end{itemize}
+    \end{frame}
+    
+    % ----------- Autoencoders 11 ---------------
+    \begin{frame}{Entrenamiento de autoencoders}{Visión computacional profunda}
+        \begin{itemize}
+            \item \textbf{Aprendizaje:} Durante el entrenamiento de los autoencoders, se utilizan pares de datos de entrada y salida correspondientes. 
+            \item La red se entrena para \textbf{minimizar} la diferencia entre la entrada original y la salida reconstruida.
+        \end{itemize}
+    \end{frame}
+    
+    % ----------- Ejercicio 08 ------------------
+    \begin{frame}{Ejercicio}{Visión computacional profunda}
+        \begin{center}
+            {\Large \textbf{Ejercicio: Autoencoder básico}}
+        \end{center}
+        \begin{figure}
+            \centering
+            \includegraphics[width=0.6\textwidth]{autoencoder-keras}
+        \end{figure}
+    \end{frame}
+    
+    % ----------- Autoencoders 12 ---------------
+    \begin{frame}{Limitantes}{Visión computacional profunda}
+        \begin{itemize}
+            \item \textbf{Incapacidad para capturar información espacial:} Los autoencoders básicos pueden tener dificultades para capturar la estructura espacial de las imágenes, ya que no tienen en cuenta la información de vecindad de los píxeles.
+            \item \textbf{Sensibilidad a las transformaciones:} Pueden ser sensibles a las transformaciones geométricas, como la rotación o el desplazamiento de la imagen, lo que puede afectar su capacidad de reconstrucción.
+        \end{itemize}
+    \end{frame}
+    
+    % ----------- Autoencoders 13 ---------------
+    \begin{frame}{Limitantes}{Visión computacional profunda}
+        \begin{itemize}
+            \item \textbf{Autoencoders convolucionales como solución:} Son una variante de los autoencoders que incorporan capas convolucionales para abordar las limitaciones mencionadas.
+            \item \textbf{Ventajas de los autoencoders convolucionales:} Mejoran con la capacidad para capturar algunas características espaciales, preservar la estructura y ser más robustos frente a transformaciones geométricas
+        \end{itemize}
+    \end{frame}
+    
+    % ----------- Autoencoders 14 ---------------
+    \begin{frame}{Estructura de un autoencoder}{Visión computacional profunda}
+        \begin{figure}
+            \centering
+            \includegraphics[width=\textwidth]{autoencoder-architecture}
+            \let\thefootnote\relax\footnote{{\tiny “From Autoencoder to Beta-VAE.” Lilian Weng. \url{https://lilianweng.github.io/posts/2018-08-12-vae/}}}
+        \end{figure}
+    \end{frame}
+    
+    % ----------- Autoencoders 15 ---------------
+    \begin{frame}{Estructura de un autoencoder}{Visión computacional profunda}
+        \begin{figure}
+            \centering
+            \includegraphics[width=0.85\textwidth]{conv-autoencoder}
+            \let\thefootnote\relax\footnote{{\tiny “IROS 2017: Feature discovery and visualization of robot mission data using convolutional autoencoders and Bayesian nonparametric topic modeling.” \url{https://warp.whoi.edu/iros2017/}}}
+        \end{figure}
+    \end{frame}
+    
+    % ----------- Autoencoders 16 ---------------
+    \begin{frame}{Denoising autoencoder (DAE/DCAE)}{Visión computacional profunda}
+        \begin{figure}
+            \centering
+            \includegraphics[width=0.7\textwidth]{dcae}
+            \let\thefootnote\relax\footnote{{\tiny “Denoising autoencoder (DAE).” \url{https://subscription.packtpub.com/book/data/9781788629416/3/ch03lvl1sec19/denoising-autoencoder-dae}}}
+        \end{figure}
+    \end{frame}
+    
+    % ----------- Ejercicio 09 ------------------
+    \begin{frame}{Ejercicio}{Visión computacional profunda}
+        \begin{center}
+            {\Large \textbf{Ejercicio: Autoencoder convolucional}}
+        \end{center}
+        \begin{figure}
+            \centering
+            \includegraphics[width=0.6\textwidth]{conv-autoencoder}
+        \end{figure}
+    \end{frame}
+    
+    % ----------- Autoencoders 17 ---------------
+    \subsection{Trabajos relacionados y avances recientes}
+    
+    \begin{frame}{Trabajos relacionados y avances recientes}{Visión computacional profunda}
+        Han habido varios trabajos de investigación y avances recientes que han contribuido al desarrollo de nuevas arquitecturas, técnicas de entrenamiento mejoradas y aplicaciones emergentes.
+        \begin{columns}
+            \begin{column}{0.55\textwidth}
+                \begin{itemize}
+                    \item \textbf{UNet:} Es ampliamente utilizada en el campo de la segmentación de imágenes, pero también se ha aplicado con éxito en tareas de denoising.
+                \end{itemize}
+            \end{column}
+            \begin{column}{0.4\textwidth}
+                \begin{center}
+                    \includegraphics[width=\textwidth]{unet-model}
+                \end{center}
+            \end{column}
+        \end{columns}
+    \end{frame}
+    
+    % ----------- Autoencoders 18 ---------------
+    \begin{frame}{Trabajos relacionados y avances recientes}{Visión computacional profunda}
+        \begin{columns}
+            \begin{column}{0.55\textwidth}
+                \begin{itemize}
+                    \item \textbf{Variational Autoencoders (VAEs):} Los VAEs son una variante de los autoencoders que se utilizan para el aprendizaje de distribuciones latentes. Han demostrado ser efectivos en el denoising de imágenes al aprender representaciones latentes que siguen una distribución probabilística, lo que permite una generación más controlada y realista de imágenes limpias.
+                \end{itemize}
+            \end{column}
+            \begin{column}{0.4\textwidth}
+                \begin{center}
+                    \includegraphics[width=\textwidth]{vae}
+                \end{center}
+            \end{column}
+        \end{columns}
+    \end{frame}
+    
+    % ----------- Autoencoders 19 ---------------
+    \begin{frame}{Trabajos relacionados y avances recientes}{Visión computacional profunda}
+        \begin{columns}
+            \begin{column}{0.55\textwidth}
+                \begin{itemize}
+                    \item \textbf{Generative Adversarial Networks (GANs):} Estos modelos aprovechan la capacidad de los GANs para generar imágenes realistas y para aprender representaciones latentes eficientes. Los GANs han demostrado ser efectivos en el denoising y la generación de imágenes de alta calidad, entre otros.
+                \end{itemize}
+            \end{column}
+            \begin{column}{0.4\textwidth}
+                \begin{center}
+                    \includegraphics[width=\textwidth]{gans-ae}
+                \end{center}
+            \end{column}
+        \end{columns}
+    \end{frame}
+    
+    % ----------- Autoencoders 20 ---------------
+    \begin{frame}{Tareas en el campo de visión artificial}{Visión computacional profunda}
+        \begin{itemize}
+            \item \textbf{Clasificación de imágenes:} La tarea de clasificación de imágenes implica asignar una etiqueta o categoría a una imagen de entrada. Esto implica entrenar un modelo para reconocer y distinguir diferentes objetos, personas o escenas en una imagen.
+            \item \textbf{Detección de objetos:} La detección de objetos implica localizar y clasificar múltiples objetos en una imagen. El objetivo es detectar la presencia y la ubicación de objetos específicos en una escena, a menudo utilizando cuadros delimitadores para delinear las regiones donde se encuentran los objetos.
+            \item \textbf{Denoising o reconstrucción de imágenes:} Consiste en eliminar o reducir el ruido presente en una imagen, obteniendo una versión más limpia y clara. Esta tarea es relevante en áreas como la fotografía, la medicina y la seguridad.
+        \end{itemize}
+    \end{frame}
+    
+    % ----------- Autoencoders 21 ---------------
+    \begin{frame}{Tareas en el campo de visión artificial}{Visión computacional profunda}
+        \begin{itemize}
+            \item \textbf{Segmentación semántica:} La segmentación semántica implica asignar una etiqueta a cada píxel de una imagen para identificar y delimitar las diferentes regiones o objetos presentes. El objetivo es comprender la estructura y el contenido de una imagen a nivel de píxel.
+            \item \textbf{Detección de rostros:} La detección de rostros es una tarea específica de la visión artificial que implica detectar y localizar los rostros en una imagen. Es ampliamente utilizado en aplicaciones de reconocimiento facial, análisis de emociones y sistemas de seguridad.
+            \item \textbf{Reconocimiento y verificación facial:} El reconocimiento facial se refiere a la tarea de identificar y reconocer a una persona específica a partir de una imagen o secuencia de imágenes. La verificación facial se enfoca en verificar si una imagen de rostro coincide con una identidad específica.
+        \end{itemize}
+    \end{frame}
+    
+    % ----------- Autoencoders 22 ---------------
+    \begin{frame}{Tareas en el campo de visión artificial}{Visión computacional profunda}
+        \begin{itemize}
+            \item \textbf{Estimación de pose:} La estimación de pose se refiere a la tarea de determinar la posición y orientación de un objeto o persona en una imagen. Esto implica detectar y rastrear las articulaciones o puntos clave en una imagen para comprender la postura y el movimiento.
+            \item \textbf{Estimación de profundidad:} La estimación de profundidad implica inferir la información de la distancia o la profundidad de los objetos en una imagen. Es útil en aplicaciones de realidad virtual, conducción autónoma y sistemas de navegación.
+            \item \textbf{Super-resolución:} La super-resolución se refiere a aumentar la resolución o la calidad de una imagen de baja resolución. El objetivo es generar una versión de alta resolución que capture más detalles y claridad.
+        \end{itemize}
+    \end{frame}
+    
+    % Mover/eliminar conforme se agregan los contenidos
+    \section{Modelado profundo de secuencias}
+    \section{Modelado generativo profundo}
+    \section{Panorama actual y futuro}
+    
+    % ----------- Lecturas recomendadas 05 ------
+    \begin{frame}{Lecturas recomendadas}{Visión computacional}
+        \begin{itemize}
+            \item \colorbox{blue!10}{\href{https://lilianweng.github.io/posts/2018-08-12-vae/}{From Autoencoder to Beta-VAE}}
+            \item \colorbox{blue!10}{\href{https://blog.keras.io/building-autoencoders-in-keras.html}{Building Autoencoders in Keras}}
+            \item \colorbox{blue!10}{\href{https://www.codificandobits.com/blog/autoencoders-explicacion-y-tutorial-python/}{Autoencoders: explicación y tutorial en Python}}
+            \item \colorbox{blue!10}{\href{https://towardsdatascience.com/autoencoder-for-denoising-images-7d63a0831bfd}{Autoencoder For Denoising Images}}
+            \item Medical image denoising using \colorbox{blue!10}{\href{https://arxiv.org/pdf/1608.04667}{convolutional denoising autoencoders}}
+            
+        \end{itemize}
+    \end{frame}
 
+    {
+        \setbeamercolor{background canvas}{bg=}
+        \includepdf[pages={1-11}]{unet.pdf}
+    }
+    
+    % ----------- Ejercicio 10 ------------------
+    \begin{frame}{Ejercicio}{Visión computacional profunda}
+        \begin{center}
+            {\Large \textbf{Ejercicio: Entrenamiento de U-Net}}
+        \end{center}
+        \begin{figure}
+            \centering
+            \includegraphics[width=0.6\textwidth]{unet-model}
+        \end{figure}
+    \end{frame}
+    
+    % ----------- Anuncio -----------------------
+    \begin{frame}{¡Anuncio!}{Visión computacional profunda}
+        \begin{center}
+            {\Large \textbf{Próxima sesión: Modelado profundo de secuencias (con Mtro. Paco)}}
+        \end{center}
+    \end{frame}
 	
 \end{document}
 
