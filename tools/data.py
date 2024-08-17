@@ -16,6 +16,7 @@ from tensorflow.keras.preprocessing.image import ImageDataGenerator
 import skimage.transform as transf
 import skimage.io as io
 import numpy as np
+import cv2
 
 sky = [128, 128, 128]
 building = [128, 0, 0]
@@ -98,7 +99,7 @@ def train_generator(batch_size,
                     target_size=(256, 256),
                     seed=1):
     """Train generator function.
-    
+
     Parameters
     ----------
     batch_size : int
@@ -129,7 +130,7 @@ def train_generator(batch_size,
         Target size for the images. The default is (256, 256).
     seed : int, optional
         Seed for the random number generator. The default is 1.
-    
+
     Yields
     ------
     img : array
@@ -188,7 +189,7 @@ def test_generator(test_path,
         Flag for multi-class segmentation. The default is False.
     as_gray : bool, optional
         Flag for grayscale images. The default is True.
-    
+
     Yields
     ------
     img : array
@@ -203,7 +204,8 @@ def test_generator(test_path,
         img = np.reshape(img, img.shape + (1,)) \
             if not flag_multi_class else img
         img = np.reshape(img, (1, ) + img.shape)
-        yield img
+        # yield img # Newer versions ask for tuple
+        yield (img, )
 
 
 def visualize_label(num_class, color_dict, img):
@@ -217,7 +219,7 @@ def visualize_label(num_class, color_dict, img):
         Dictionary of colors.
     img : array
         Image array.
-    
+
     Returns
     -------
     img_out : array
@@ -259,4 +261,5 @@ def save_results(save_path, npyfile, flag_multi_class=False, num_class=2):
         img = img.astype(np.uint8)
 
         img_path = os.path.join(save_path, f'{i}.png')
-        io.imsave(img_path, img)
+        # io.imsave(img_path, img) # Newer versions mark error saving in Colab
+        cv2.imwrite(img_path, img)
