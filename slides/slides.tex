@@ -1955,11 +1955,6 @@ amurmapleblack
         \end{itemize}
     \end{frame}
     
-    % Mover/eliminar conforme se agregan los contenidos
-    \section{Modelado profundo de secuencias}
-    \section{Modelado generativo profundo}
-    \section{Panorama actual y futuro}
-    
     % ----------- Lecturas recomendadas 05 ------
     \begin{frame}{Lecturas recomendadas}{Visión computacional}
         \begin{itemize}
@@ -1988,11 +1983,277 @@ amurmapleblack
         \end{figure}
     \end{frame}
     
-    % ----------- Anuncio -----------------------
-    \begin{frame}{¡Anuncio!}{Visión computacional profunda}
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%    
+    % ----------- Sequence Modeling -------------
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    % ----------- Anuncio -----------------------    
+    \section{Modelado profundo de secuencias}
+    \subsection{Sesión con Mtro. Paco}
+    
+    \begin{frame}{¡Anuncio!}{Modelado profundo de secuencias}
         \begin{center}
             {\Large \textbf{Próxima sesión: Modelado profundo de secuencias (con Mtro. Paco)}}
         \end{center}
+    \end{frame}
+    
+    
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%    
+    % ----------- Generative Modeling -----------
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    % ----------- Modelos generativos 01 --------
+    \section{Modelado generativo profundo}
+    \subsection{Introducción a modelos generativos}
+    
+    \begin{frame}{¿Qué son los Modelos Generativos?}{Modelado generativo profundo}
+        \begin{itemize}
+            \item Un modelo generativo es un tipo de modelo que puede generar nuevos datos a partir de un conjunto de datos de entrenamiento.
+            \item A diferencia de los modelos discriminativos, que se centran en predecir etiquetas a partir de características, los modelos generativos buscan aprender la distribución subyacente de los datos para poder generar nuevas muestras.
+            \item \textbf{\textit{En esencia...}} Los modelos generativos se enfocan en modelar cómo se distribuyen los datos de forma que puedan generar datos que "parecen" reales.
+        \end{itemize}
+    \end{frame}
+    
+    % ----------- Modelos generativos 02 --------
+    \begin{frame}{¿Qué son los Modelos Generativos?}{Modelado generativo profundo}
+        \begin{figure}
+            \centering
+            \includegraphics[width=\textwidth]{faces-not-exist}
+        \end{figure}
+    \end{frame}
+    
+    % ----------- Modelos generativos 03 --------
+    \begin{frame}{Modelos generativos vs. discriminativos}{Modelado generativo profundo}
+        \begin{itemize}
+            \item \textbf{Modelos discriminativos:}
+            \begin{itemize}
+                \item Se enfocan en la predicción de etiquetas.
+                \item Ejemplos: Regresión logística, SVM, redes neuronales feedforward.
+            \end{itemize}
+            \item \textbf{Modelos generativos:}
+            \begin{itemize}
+                \item Modelan la distribución conjunta de los datos.
+                \item Ejemplos: Redes Bayesianas, GANs, VAEs.
+            \end{itemize}
+            \item \textbf{\textit{En esencia...}} Los modelos discriminativos responden a preguntas como "¿A qué clase pertenece esta muestra?", mientras que los generativos responden a "¿Cómo se ve una muestra típica de esta clase?".
+        \end{itemize}
+    \end{frame}
+    
+    % ----------- Modelos generativos 04 --------
+    \begin{frame}{¿Qué son los Modelos Generativos?}{Modelado generativo profundo}
+        \begin{figure}
+            \centering
+            \includegraphics[width=0.7\textwidth]{discriminativo}
+        \end{figure}
+    \end{frame}
+    
+    % ----------- Modelos generativos 05 --------
+    \begin{frame}{Aplicaciones de modelos generativos}{Modelado generativo profundo}
+        \begin{itemize}
+            \item \textbf{Imágenes:}
+            \begin{itemize}
+                \item Generación de rostros humanos (e.g., StyleGAN).
+                \item Generación de arte abstracto.
+            \end{itemize}
+            \item \textbf{Texto:}
+            \begin{itemize}
+                \item Composición automática de párrafos o historias.
+                \item Traducción automática y generación de poesía.
+            \end{itemize}
+            \item \textbf{Música:}
+            \begin{itemize}
+                \item Composición de melodías.
+                \item Generación de pistas basadas en un estilo dado.
+            \end{itemize}
+            \item \textbf{Videojuegos:}
+            \begin{itemize}
+                \item Generación de mundos y personajes.
+                \item Creación de niveles procedurales.
+            \end{itemize}
+        \end{itemize}
+    \end{frame}
+    
+    % ----------- Modelos generativos 06 --------
+    \begin{frame}{Ejemplos}{Modelado generativo profundo}
+        \begin{center}
+            {\Huge \textbf{EJEMPLOS}}
+            
+            \textbf{Pregunta:} ¿cómo están revolucionando estas industrias? ¿cuáles son las implicaciones éticas y creativas de estas aplicaciones?
+        \end{center}
+    \end{frame}
+    
+    % ----------- Modelos generativos 07 --------
+    \begin{frame}{Autoencoders (AEs)}{Modelado generativo profundo}
+        \begin{itemize}
+            \item Un autoencoder es una red neuronal diseñada para aprender una representación comprimida (codificación) de los datos de entrada.
+            \item \textbf{Codificador (Encoder):} Reduce la dimensionalidad de los datos.
+            \item \textbf{Decodificador (Decoder):} Reconstruye los datos originales a partir de la representación comprimida.
+            \item \textbf{\textit{En esencia...}} La idea principal detrás de los autoencoders es aprender a copiar la entrada a la salida, pero a través de una representación más pequeña (la representación latente), lo que obliga al modelo a aprender características esenciales de los datos.
+        \end{itemize}
+    \end{frame}
+    
+    % ----------- Modelos generativos 08 --------
+    \begin{frame}{Estructura de un autoencoder}{Modelado generativo profundo}
+        \begin{figure}
+            \centering
+            \includegraphics[width=\textwidth]{autoencoder-architecture}
+            \let\thefootnote\relax\footnote{{\tiny “From Autoencoder to Beta-VAE.” Lilian Weng. \url{https://lilianweng.github.io/posts/2018-08-12-vae/}}}
+        \end{figure}
+    \end{frame}
+    
+    % ----------- Modelos generativos 09 --------
+    \begin{frame}{Autoencoders}{Modelado generativo profundo}
+        \begin{itemize}
+            \item \textbf{Reducción de dimensionalidad:} Los autoencoders pueden utilizarse para reducir la dimensionalidad de los datos, similar al Análisis de Componentes Principales (PCA).
+            \item \textbf{Detección de anomalías:} Las reconstrucciones defectuosas pueden indicar datos anómalos o inusuales.
+            \item \textbf{Generación de datos sintéticos:} Generar nuevas muestras modificando la representación latente.
+        \end{itemize}
+    \end{frame}
+    
+    % ----------- Modelos generativos 10 --------
+    \subsection{Variational Autoencoders (VAEs)}
+    
+    \begin{frame}{Variational Autoencoders (VAEs)}{Modelado generativo profundo}
+        \begin{itemize}
+            \item Un VAE es una versión probabilística de un autoencoder que genera nuevas muestras al aprender la distribución subyacente de los datos.
+            \item Las principales diferencias con un \textit{AE}:
+            \begin{itemize}
+                \item \textbf{Codificación estocástica:} Los VAEs aprenden a mapear datos a una distribución (e.g., normal) en lugar de un punto fijo.
+                \item \textbf{Regularización:} Introduce una pérdida de regularización para garantizar que la distribución latente sea continua.
+            \end{itemize}
+            \item \textbf{\textit{En esencia...}} Los VAEs no sólo intentan reconstruir los datos, sino que también buscan aprender una estructura probabilística que permita generar nuevas muestras plausibles al azar.
+        \end{itemize}
+    \end{frame}
+    
+    % ----------- Modelos generativos 11 --------
+    \begin{frame}{Estructura de un variational autoencoder}{Modelado generativo profundo}
+        \begin{figure}
+            \centering
+            \includegraphics[width=\textwidth]{vae-gaussian}
+            \let\thefootnote\relax\footnote{{\tiny “From Autoencoder to Beta-VAE.” Lilian Weng. \url{https://lilianweng.github.io/posts/2018-08-12-vae/}}}
+        \end{figure}
+    \end{frame}
+    
+    % ----------- Modelos generativos 12 --------
+    \begin{frame}{Observaciones (VAEs)}{Modelado generativo profundo}
+        \begin{itemize}
+            \item En lugar de aprender un vector de características latentes fijo para cada entrada, un VAE aprende los parámetros (media y varianza) de una distribución que representa posibles codificaciones latentes para esa entrada.
+            \item A partir de estos parámetros, se toma una muestra para obtener la representación latente que se pasará al decodificador (decoder). Este proceso de muestreo introduce un componente estocástico (aleatorio), que permite que un mismo dato de entrada pueda ser codificado en múltiples puntos del espacio latente, lo que facilita la generación de nuevas muestras similares pero no idénticas.
+        \end{itemize}
+    \end{frame}
+    
+    % ----------- Modelos generativos 13 --------
+    \begin{frame}{Variational Autoencoders (VAEs)}{Modelado generativo profundo}
+        \begin{itemize}
+            \item \textbf{Generación de nuevos datos:} Los VAEs pueden generar nuevas muestras variando las entradas en la distribución latente.
+            \item \textbf{Interpolación y Manipulación de Latentes:} Permite crear transiciones suaves entre diferentes muestras (e.g., morfing de imágenes).
+            \item \textbf{\textit{En esencia...}} Los VAEs son potentes para generar datos nuevos y realistas, especialmente en aplicaciones como la generación de rostros o la creación de contenido sintético.
+        \end{itemize}
+    \end{frame}
+    
+    % ----------- Ejercicio 11 ------------------
+    \begin{frame}{Ejercicio}{Modelado generativo profundo}
+        \begin{center}
+            {\Large \textbf{Ejercicio: Tutoriales de TensorFlow}}
+        \end{center}
+        \begin{figure}
+            \centering
+            \includegraphics[width=0.6\textwidth]{vae-gaussian}
+        \end{figure}
+    \end{frame}
+    
+    % ----------- Modelos generativos 14 --------
+    \subsection{Redes Generativas Adversariales (GANs)}
+    
+    \begin{frame}{Redes Generativas Antagónicas/Adversariales (GANs)}{Modelado generativo profundo}
+        \begin{itemize}
+            \item Una GAN es una clase de redes neuronales en la que dos redes (un generador y un discriminador) compiten en un juego de suma cero.
+            \item \textbf{Componentes principales:} 
+            \begin{itemize}
+                \item \textbf{Generador ($G$):} Crea datos falsos que intentan parecer reales.
+                \item \textbf{Discriminador ($D$):} Intenta distinguir entre datos reales y datos generados por el generador.
+            \end{itemize}
+            \item \textbf{\textit{En esencia...}} El generador y el discriminador se entrenan simultáneamente en un proceso adversarial. El generador intenta mejorar sus datos generados para engañar al discriminador, mientras que el discriminador intenta mejorar su capacidad para distinguir entre datos reales y generados.
+        \end{itemize}
+    \end{frame}
+    
+    % ----------- Modelos generativos 15 --------
+    \begin{frame}{Estructura de una GAN}{Modelado generativo profundo}
+        \begin{figure}
+            \centering
+            \includegraphics[width=\textwidth]{gans}
+        \end{figure}
+    \end{frame}
+    
+    % ----------- Modelos generativos 16 --------
+    \begin{frame}{Funcionamiento de GANs)}{Modelado generativo profundo}
+        \begin{itemize}
+            \item \textbf{Entrenamiento:} 
+            \begin{itemize}
+                \item \textbf{Generación de datos:} El generador crea una muestra a partir de ruido.
+                \item \textbf{Evaluación del discriminador:} El discriminador evalúa si la muestra es real o falsa.
+                \item \textbf{Retroalimentación:} El generador y el discriminador actualizan sus pesos en función de la retroalimentación recibida.
+            \end{itemize}
+            \item \textbf{Objetivo:} 
+            \begin{itemize}
+                \item \textbf{Generador:} Minimizar la probabilidad de que el discriminador identifique las muestras como falsas.
+                \item \textbf{Discriminador:} Maximizar la precisión al clasificar muestras como reales o falsas.
+            \end{itemize}
+        \end{itemize}
+    \end{frame}
+    
+    % ----------- Modelos generativos 17 --------
+    \begin{frame}{Variantes de GANs)}{Modelado generativo profundo}
+        \begin{itemize}
+            \item \textbf{Deep Convolutional GANs (DCGANs):} Utilizan capas convolucionales en lugar de capas completamente conectadas para mejorar la calidad de las imágenes generadas. \textbf{Aplicaciones:} Generación de imágenes de alta resolución y texturas más realistas.
+            \item \textbf{Conditional GANs (cGANs):} Incorporan información adicional (etiquetas) en el proceso de generación para controlar el tipo de datos generados. \textbf{Aplicaciones:} Generación de imágenes en categorías específicas, como rostros con expresiones particulares o escenas con características predefinidas.
+            \item \textbf{CycleGAN:}  Permite la conversión de imágenes entre dos dominios diferentes sin necesidad de pares de imágenes coincidentes, utilizando ciclos de consistencia para asegurar que la conversión sea realista en ambas direcciones. \textbf{Aplicaciones:} Transferencia de estilo entre fotos y pinturas, traducción de imágenes entre estaciones o entre distintos tipos de objetos.
+        \end{itemize}
+    \end{frame}
+    
+    % ----------- Modelos generativos 18 --------
+    \begin{frame}{Aplicaciones de las GANs)}{Modelado generativo profundo}
+        \begin{itemize}
+            \item \textit{Generación de imágenes realistas:} Creación de imágenes fotorrealistas a partir de ruido aleatorio.
+            \item \textit{Deepfakes:} Sustitución de rostros en videos con gran realismo.
+            \item \textit{Estilo de transferencia:} Aplicación de estilos artísticos a imágenes.
+            \item \textit{Aumento de datos:} Generación de datos sintéticos para mejorar los conjuntos de datos en problemas de aprendizaje automático.
+        \end{itemize}
+    \end{frame}
+    
+    % ----------- Ejercicio 12 ------------------
+    \begin{frame}{Ejercicio}{Modelado generativo profundo}
+        \begin{center}
+            {\Large \textbf{Ejercicio: Tutoriales de TensorFlow}}
+        \end{center}
+        \begin{figure}
+            \centering
+            \includegraphics[width=0.6\textwidth]{gans}
+        \end{figure}
+    \end{frame}
+    
+    % ----------- Lecturas recomendadas 06 ------
+    \begin{frame}{Lecturas recomendadas}{Modelado generativo profundo}
+        \begin{itemize}
+            \item \colorbox{blue!10}{\href{https://lilianweng.github.io/posts/2018-08-12-vae/}{From Autoencoder to Beta-VAE}}
+            \item \colorbox{blue!10}{\href{https://www.cs.us.es/~fsancho/Blog/posts/VAE.md}{Variational AutoEncoder}}
+            \item \colorbox{blue!10}{\href{https://learnopencv.com/variational-autoencoder-in-tensorflow/}{Variational Autoencoder}} in TensorFlow
+            \item \colorbox{blue!10}{\href{https://lilianweng.github.io/posts/2021-07-11-diffusion-models/}{What are Diffusion Models?}}
+            \item \colorbox{blue!10}{\href{https://developer.ibm.com/articles/generative-adversarial-networks-explained/}{Generative adversarial networks explained
+            }}
+        \end{itemize}
+    \end{frame}
+    
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%    
+    % ----------- Panorama actual y futuro ------
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    \section{Panorama actual y futuro}
+    
+    % ----------- Modelos generativos -----------
+    \begin{frame}{Estructura de modelos generativos}{Panorama actual y futuro}
+        \begin{figure}
+            \centering
+            \includegraphics[width=0.7\textwidth]{generative-overview}
+            \let\thefootnote\relax\footnote{{\tiny “What are Diffusion Models?” Lilian Weng. \url{https://lilianweng.github.io/posts/2021-07-11-diffusion-models/}}}
+        \end{figure}
     \end{frame}
 	
 \end{document}
